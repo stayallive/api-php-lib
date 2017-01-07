@@ -1,32 +1,34 @@
 <?php
+
 // Copyright 1999-2016. Parallels IP Holdings GmbH.
 
 namespace PleskX\Api\Operator;
+
 use PleskX\Api\Struct\Customer as Struct;
 
 class Customer extends \PleskX\Api\Operator
 {
-
     /**
-     * @param array $properties
+     * @param  array       $properties
      * @return Struct\Info
      */
     public function create($properties)
     {
         $packet = $this->_client->getPacket();
-        $info = $packet->addChild($this->_wrapperTag)->addChild('add')->addChild('gen_info');
+        $info   = $packet->addChild($this->_wrapperTag)->addChild('add')->addChild('gen_info');
 
         foreach ($properties as $name => $value) {
             $info->addChild($name, $value);
         }
 
         $response = $this->_client->request($packet);
+
         return new Struct\Info($response);
     }
 
     /**
-     * @param string $field
-     * @param integer|string $value
+     * @param  string     $field
+     * @param  int|string $value
      * @return bool
      */
     public function delete($field, $value)
@@ -35,13 +37,14 @@ class Customer extends \PleskX\Api\Operator
     }
 
     /**
-     * @param string $field
-     * @param integer|string $value
+     * @param  string             $field
+     * @param  int|string         $value
      * @return Struct\GeneralInfo
      */
     public function get($field, $value)
     {
         $items = $this->_getItems(Struct\GeneralInfo::class, 'gen_info', $field, $value);
+
         return reset($items);
     }
 
@@ -52,5 +55,4 @@ class Customer extends \PleskX\Api\Operator
     {
         return $this->_getItems(Struct\GeneralInfo::class, 'gen_info');
     }
-
 }

@@ -1,31 +1,34 @@
 <?php
+
 // Copyright 1999-2016. Parallels IP Holdings GmbH.
 
 namespace PleskX\Api\Operator;
+
 use PleskX\Api\Struct\Subdomain as Struct;
 
 class Subdomain extends \PleskX\Api\Operator
 {
     /**
-     * @param array $properties
+     * @param  array       $properties
      * @return Struct\Info
      */
     public function create($properties)
     {
         $packet = $this->_client->getPacket();
-        $info = $packet->addChild($this->_wrapperTag)->addChild('add');
+        $info   = $packet->addChild($this->_wrapperTag)->addChild('add');
 
         foreach ($properties as $name => $value) {
             $info->addChild($name, $value);
         }
 
         $response = $this->_client->request($packet);
+
         return new Struct\Info($response);
     }
 
     /**
-     * @param string $field
-     * @param integer|string $value
+     * @param  string     $field
+     * @param  int|string $value
      * @return bool
      */
     public function delete($field, $value)
@@ -34,19 +37,20 @@ class Subdomain extends \PleskX\Api\Operator
     }
 
     /**
-     * @param string $field
-     * @param integer|string $value
+     * @param  string      $field
+     * @param  int|string  $value
      * @return Struct\Info
      */
     public function get($field, $value)
     {
         $items = $this->getAll($field, $value);
+
         return reset($items);
     }
 
     /**
-     * @param string $field
-     * @param integer|string $value
+     * @param  string        $field
+     * @param  int|string    $value
      * @return Struct\Info[]
      */
     public function getAll($field = null, $value = null)
@@ -63,9 +67,9 @@ class Subdomain extends \PleskX\Api\Operator
 
         $items = [];
         foreach ($response->xpath('//result') as $xmlResult) {
-            $item = new Struct\Info($xmlResult->data);
+            $item     = new Struct\Info($xmlResult->data);
             $item->id = (int)$xmlResult->id;
-            $items[] = $item;
+            $items[]  = $item;
         }
 
         return $items;

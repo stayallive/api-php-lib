@@ -1,15 +1,15 @@
 <?php
+
 // Copyright 1999-2016. Parallels IP Holdings GmbH.
 
 namespace PleskX\Api\Struct\Server\Statistics;
 
 class Objects extends \PleskX\Api\Struct
 {
-
-    /** @var integer */
+    /** @var int */
     public $clients;
 
-    /** @var integer */
+    /** @var int */
     public $domains;
 
     public function __construct($apiResponse)

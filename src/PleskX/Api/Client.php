@@ -1,16 +1,18 @@
 <?php
+
 // Copyright 1999-2016. Parallels IP Holdings GmbH.
 
 namespace PleskX\Api;
+
 use SimpleXMLElement;
 
 /**
- * Client for Plesk XML-RPC API
+ * Client for Plesk XML-RPC API.
  */
 class Client
 {
     const RESPONSE_SHORT = 1;
-    const RESPONSE_FULL = 2;
+    const RESPONSE_FULL  = 2;
 
     protected $_host;
     protected $_port;
@@ -21,38 +23,38 @@ class Client
     protected $_version = '';
 
     protected static $_isExecutionsLogEnabled = false;
-    protected static $_executionLog = [];
+    protected static $_executionLog           = [];
 
     protected $_operatorsCache = [];
 
     /**
-     * Create client
+     * Create client.
      *
      * @param string $host
-     * @param int $port
+     * @param int    $port
      * @param string $protocol
      */
     public function __construct($host, $port = 8443, $protocol = 'https')
     {
-        $this->_host = $host;
-        $this->_port = $port;
+        $this->_host     = $host;
+        $this->_port     = $port;
         $this->_protocol = $protocol;
     }
 
     /**
-     * Setup credentials for authentication
+     * Setup credentials for authentication.
      *
      * @param string $login
      * @param string $password
      */
     public function setCredentials($login, $password)
     {
-        $this->_login = $login;
+        $this->_login    = $login;
         $this->_password = $password;
     }
 
     /**
-     * Define secret key for alternative authentication
+     * Define secret key for alternative authentication.
      *
      * @param string $secretKey
      */
@@ -62,7 +64,7 @@ class Client
     }
 
     /**
-     * Set default version for requests
+     * Set default version for requests.
      *
      * @param string $version
      */
@@ -72,7 +74,7 @@ class Client
     }
 
     /**
-     * Retrieve host used for communication
+     * Retrieve host used for communication.
      *
      * @return string
      */
@@ -82,7 +84,7 @@ class Client
     }
 
     /**
-     * Retrieve port used for communication
+     * Retrieve port used for communication.
      *
      * @return int
      */
@@ -92,7 +94,7 @@ class Client
     }
 
     /**
-     * Retrieve name of the protocol (http or https) used for communication
+     * Retrieve name of the protocol (http or https) used for communication.
      *
      * @return string
      */
@@ -102,24 +104,25 @@ class Client
     }
 
     /**
-     * Retrieve XML template for packet
+     * Retrieve XML template for packet.
      *
-     * @param string|null $version
+     * @param  string|null      $version
      * @return SimpleXMLElement
      */
     public function getPacket($version = null)
     {
         $protocolVersion = !is_null($version) ? $version : $this->_version;
-        $content = "<?xml version='1.0' encoding='UTF-8' ?>";
-        $content .= "<packet" . ("" === $protocolVersion ? "" : " version='$protocolVersion'") . "/>";
+        $content         = "<?xml version='1.0' encoding='UTF-8' ?>";
+        $content .= '<packet' . ('' === $protocolVersion ? '' : " version='$protocolVersion'") . '/>';
+
         return new SimpleXMLElement($content);
     }
 
     /**
-     * Perform API request
+     * Perform API request.
      *
-     * @param string|array|SimpleXMLElement $request
-     * @param int $mode
+     * @param  string|array|SimpleXMLElement $request
+     * @param  int                           $mode
      * @return XmlResponse
      */
     public function request($request, $mode = self::RESPONSE_SHORT)
@@ -131,14 +134,14 @@ class Client
 
             if (is_array($request)) {
                 $request = $this->_arrayToXml($request, $xml)->asXML();
-            } else if (preg_match('/^[a-z]/', $request)) {
+            } elseif (preg_match('/^[a-z]/', $request)) {
                 $request = $this->_expandRequestShortSyntax($request, $xml);
             }
         }
 
         if ('sdk' == $this->_protocol) {
             $requestXml = new SimpleXMLElement((string)$request);
-            $xml = \pm_ApiRpc::getService()->call($requestXml->children()[0]->asXml(), $this->_login);
+            $xml        = \pm_ApiRpc::getService()->call($requestXml->children()[0]->asXml(), $this->_login);
         } else {
             $xml = $this->_performHttpRequest($request);
         }
@@ -148,11 +151,11 @@ class Client
     }
 
     /**
-     * Perform HTTP request to end-point
+     * Perform HTTP request to end-point.
      *
-     * @param string $request
-     * @return XmlResponse
+     * @param  string           $request
      * @throws Client\Exception
+     * @return XmlResponse
      */
     private function _performHttpRequest($request)
     {
@@ -174,8 +177,8 @@ class Client
 
         if (self::$_isExecutionsLogEnabled) {
             self::$_executionLog[] = [
-                'trace' => debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS),
-                'request' => $request,
+                'trace'    => debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS),
+                'request'  => $request,
                 'response' => $result,
             ];
         }
@@ -183,40 +186,40 @@ class Client
         curl_close($curl);
 
         $xml = new XmlResponse($result);
+
         return $xml;
     }
 
     /**
-     * Perform multiple API requests using single HTTP request
+     * Perform multiple API requests using single HTTP request.
      *
      * @param $requests
-     * @param int $mode
-     * @return array
+     * @param  int              $mode
      * @throws Client\Exception
+     * @return array
      */
     public function multiRequest($requests, $mode = self::RESPONSE_SHORT)
     {
-
         $requestXml = $this->getPacket();
 
         foreach ($requests as $request) {
             if ($request instanceof SimpleXMLElement) {
                 throw new Client\Exception('SimpleXML type of request is not supported for multi requests.');
-            } else {
-                if (is_array($request)) {
-                    $request = $this->_arrayToXml($request, $requestXml)->asXML();
-                } else if (preg_match('/^[a-z]/', $request)) {
-                    $this->_expandRequestShortSyntax($request, $requestXml);
-                }
             }
+            if (is_array($request)) {
+                $request = $this->_arrayToXml($request, $requestXml)->asXML();
+            } elseif (preg_match('/^[a-z]/', $request)) {
+                $this->_expandRequestShortSyntax($request, $requestXml);
+            }
+            
             $responses[] = $this->request($request);
         }
 
         if ('sdk' == $this->_protocol) {
             throw new Client\Exception('Multi requests are not supported via SDK.');
-        } else {
-            $responseXml = $this->_performHttpRequest($requestXml->asXML());
         }
+        $responseXml = $this->_performHttpRequest($requestXml->asXML());
+        
 
         $responses = [];
         foreach ($responseXml->children() as $childNode) {
@@ -227,7 +230,7 @@ class Client
             $childDomNode = $dom->importNode($childDomNode, true);
             $dom->documentElement->appendChild($childDomNode);
 
-            $response = simplexml_load_string($dom->saveXML());
+            $response    = simplexml_load_string($dom->saveXML());
             $responses[] = (self::RESPONSE_FULL == $mode) ? $response : $response->xpath('//result')[0];
         }
 
@@ -235,15 +238,15 @@ class Client
     }
 
     /**
-     * Retrieve list of headers needed for request
+     * Retrieve list of headers needed for request.
      *
      * @return array
      */
     protected function _getHeaders()
     {
         $headers = array(
-            "Content-Type: text/xml",
-            "HTTP_PRETTY_PRINT: TRUE",
+            'Content-Type: text/xml',
+            'HTTP_PRETTY_PRINT: TRUE',
         );
 
         if ($this->_secretKey) {
@@ -257,7 +260,7 @@ class Client
     }
 
     /**
-     * Enable or disable execution log
+     * Enable or disable execution log.
      *
      * @param bool $enable
      */
@@ -267,7 +270,7 @@ class Client
     }
 
     /**
-     * Retrieve execution log
+     * Retrieve execution log.
      *
      * @return array
      */
@@ -277,9 +280,9 @@ class Client
     }
 
     /**
-     * Verify that response does not contain errors
+     * Verify that response does not contain errors.
      *
-     * @param XmlResponse $xml
+     * @param  XmlResponse $xml
      * @throws Exception
      */
     protected function _verifyResponse($xml)
@@ -289,37 +292,37 @@ class Client
         }
 
         if ($xml->xpath('//status[text()="error"]') && $xml->xpath('//errcode') && $xml->xpath('//errtext')) {
-            $errorCode = (int)$xml->xpath('//errcode')[0];
+            $errorCode    = (int)$xml->xpath('//errcode')[0];
             $errorMessage = (string)$xml->xpath('//errtext')[0];
             throw new Exception($errorMessage, $errorCode);
         }
     }
 
     /**
-     * Expand short syntax (some.method.call) into full XML representation
+     * Expand short syntax (some.method.call) into full XML representation.
      *
-     * @param string $request
-     * @param SimpleXMLElement $xml
+     * @param  string           $request
+     * @param  SimpleXMLElement $xml
      * @return string
      */
     protected function _expandRequestShortSyntax($request, SimpleXMLElement $xml)
     {
         $parts = explode('.', $request);
-        $node = $xml;
+        $node  = $xml;
 
         foreach ($parts as $part) {
             @list($name, $value) = explode('=', $part);
-            $node = $node->addChild($name, $value);
+            $node                = $node->addChild($name, $value);
         }
 
         return $xml->asXML();
     }
 
     /**
-     * Convert array to XML representation
+     * Convert array to XML representation.
      *
-     * @param array $array
-     * @param SimpleXMLElement $xml
+     * @param  array            $array
+     * @param  SimpleXMLElement $xml
      * @return SimpleXMLElement
      */
     protected function _arrayToXml(array $array, SimpleXMLElement $xml)
@@ -336,13 +339,13 @@ class Client
     }
 
     /**
-     * @param string $name
+     * @param  string               $name
      * @return \PleskX\Api\Operator
      */
     protected function _getOperator($name)
     {
         if (!isset($this->_operatorsCache[$name])) {
-            $className = '\\PleskX\\Api\\Operator\\' . $name;
+            $className                    = '\\PleskX\\Api\\Operator\\' . $name;
             $this->_operatorsCache[$name] = new $className($this);
         }
 
@@ -684,5 +687,4 @@ class Client
     {
         return $this->_getOperator('WpInstance');
     }
-
 }

@@ -1,39 +1,43 @@
 <?php
+
 // Copyright 1999-2016. Parallels IP Holdings GmbH.
 
 namespace PleskX\Api\Operator;
+
 use PleskX\Api\Struct\Webspace as Struct;
 
 class Webspace extends \PleskX\Api\Operator
 {
-
     public function getPermissionDescriptor()
     {
         $response = $this->request('get-permission-descriptor.filter');
+
         return new Struct\PermissionDescriptor($response);
     }
 
     public function getLimitDescriptor()
     {
         $response = $this->request('get-limit-descriptor.filter');
+
         return new Struct\LimitDescriptor($response);
     }
 
     public function getPhysicalHostingDescriptor()
     {
         $response = $this->request('get-physical-hosting-descriptor.filter');
+
         return new Struct\PhysicalHostingDescriptor($response);
     }
 
     /**
-     * @param array $properties
-     * @param array|null $hostingProperties
+     * @param  array       $properties
+     * @param  array|null  $hostingProperties
      * @return Struct\Info
      */
     public function create(array $properties, array $hostingProperties = null)
     {
         $packet = $this->_client->getPacket();
-        $info = $packet->addChild($this->_wrapperTag)->addChild('add');
+        $info   = $packet->addChild($this->_wrapperTag)->addChild('add');
 
         $infoGeneral = $info->addChild('gen_setup');
         foreach ($properties as $name => $value) {
@@ -49,17 +53,18 @@ class Webspace extends \PleskX\Api\Operator
             }
 
             if (isset($properties['ip_address'])) {
-                $infoHosting->addChild("ip_address", $properties['ip_address']);
+                $infoHosting->addChild('ip_address', $properties['ip_address']);
             }
         }
 
         $response = $this->_client->request($packet);
+
         return new Struct\Info($response);
     }
 
     /**
-     * @param string $field
-     * @param integer|string $value
+     * @param  string     $field
+     * @param  int|string $value
      * @return bool
      */
     public function delete($field, $value)
@@ -68,13 +73,14 @@ class Webspace extends \PleskX\Api\Operator
     }
 
     /**
-     * @param string $field
-     * @param integer|string $value
+     * @param  string             $field
+     * @param  int|string         $value
      * @return Struct\GeneralInfo
      */
     public function get($field, $value)
     {
         $items = $this->_getItems(Struct\GeneralInfo::class, 'gen_info', $field, $value);
+
         return reset($items);
     }
 
@@ -85,5 +91,4 @@ class Webspace extends \PleskX\Api\Operator
     {
         return $this->_getItems(Struct\GeneralInfo::class, 'gen_info');
     }
-
 }
