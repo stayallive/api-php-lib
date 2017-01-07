@@ -4,53 +4,66 @@
 
 namespace PleskX\Api;
 
+use Exception;
+use ReflectionProperty;
+
 abstract class Struct
 {
+    /**
+     * Universal setter.
+     *
+     * @param string $property
+     * @param mixed  $value
+     *
+     * @throws \Exception
+     */
     public function __set($property, $value)
     {
-        throw new \Exception("Try to set an undeclared property '$property'.");
+        throw new Exception("Try to set an undeclared property '{$property}'.");
     }
 
     /**
      * Initialize list of scalar properties by response.
      *
-     * @param  \SimpleXMLElement $apiResponse
-     * @param  array             $properties
+     * @param \SimpleXMLElement $apiResponse
+     * @param array             $properties
+     *
      * @throws \Exception
      */
     protected function _initScalarProperties($apiResponse, array $properties)
     {
         foreach ($properties as $property) {
             if (is_array($property)) {
-                $classPropertyName = current($property);
-                $value             = $apiResponse->{key($property)};
+                $classProperty = current($property);
+                $value         = $apiResponse->{key($property)};
             } else {
-                $classPropertyName = $this->_underToCamel(str_replace('-', '_', $property));
-                $value             = $apiResponse->$property;
+                $classProperty = $this->_underToCamel(str_replace('-', '_', $property));
+                $value         = $apiResponse->$property;
             }
 
-            $reflectionProperty = new \ReflectionProperty($this, $classPropertyName);
+            $reflectionProperty = new ReflectionProperty($this, $classProperty);
             $docBlock           = $reflectionProperty->getDocComment();
             $propertyType       = preg_replace('/^.+ @var ([a-z]+) .+$/', '\1', $docBlock);
 
-            if ('string' == $propertyType) {
+            if ($propertyType == 'string') {
                 $value = (string)$value;
-            } elseif ('integer' == $propertyType) {
+            } elseif ($propertyType == 'integer' || $propertyType == 'int') {
                 $value = (int)$value;
-            } elseif ('boolean' == $propertyType) {
+            } elseif ($propertyType == 'boolean' || $propertyType == 'bool') {
                 $value = in_array((string)$value, ['true', 'on', 'enabled']);
             } else {
-                throw new \Exception("Unknown property type '$propertyType'.");
+                throw new Exception("Unknown property type '{$propertyType}'.");
             }
 
-            $this->$classPropertyName = $value;
+            $this->$classProperty = $value;
         }
     }
 
     /**
      * Convert underscore separated words into camel case.
      *
-     * @param  string $under
+     * @param string $under
+     *
      * @return string
      */
     private function _underToCamel($under)
