@@ -4,8 +4,13 @@
 
 namespace PleskX\Api\Struct\Customer;
 
-class GeneralInfo extends \PleskX\Api\Struct
+use PleskX\Api\Struct;
+
+class GeneralInfo extends Struct
 {
+    /** @var string */
+    public $creationDate;
+
     /** @var string */
     public $company;
 
@@ -15,11 +20,8 @@ class GeneralInfo extends \PleskX\Api\Struct
     /** @var string */
     public $login;
 
-    /** @var string */
-    public $guid;
-
-    /** @var string */
-    public $email;
+    /** @var int */
+    public $status;
 
     /** @var string */
     public $phone;
@@ -28,10 +30,10 @@ class GeneralInfo extends \PleskX\Api\Struct
     public $fax;
 
     /** @var string */
-    public $address;
+    public $email;
 
     /** @var string */
-    public $postalCode;
+    public $address;
 
     /** @var string */
     public $city;
@@ -40,31 +42,64 @@ class GeneralInfo extends \PleskX\Api\Struct
     public $state;
 
     /** @var string */
+    public $postalCode;
+
+    /** @var string */
     public $country;
+
+    /** @var string */
+    public $locale;
+
+    /** @var string */
+    public $guid;
+
+    /** @var string */
+    public $ownerLogin;
+
+    /** @var string */
+    public $vendorGuid;
+
+    /** @var string */
+    public $externalId;
 
     /** @var string */
     public $description;
 
     /** @var string */
-    public $externalId;
+    public $password;
 
+    /** @var string */
+    public $passwordType;
+
+    /**
+     * GeneralInfo constructor.
+     *
+     * @param \SimpleXMLElement $apiResponse
+     */
     public function __construct($apiResponse)
     {
         $this->_initScalarProperties($apiResponse, [
+            ['cr_date' => 'creationDate'],
             ['cname' => 'company'],
             ['pname' => 'personalName'],
             'login',
-            'guid',
-            'email',
+            'status',
             'phone',
             'fax',
+            'email',
             'address',
-            ['pcode' => 'postalCode'],
             'city',
             'state',
+            ['pcode' => 'postalCode'],
             'country',
+            'locale',
+            'guid',
+            'owner-login',
+            'vendor-guid',
             'external-id',
             'description',
+            'password',
+            'password_type',
         ]);
     }
 }
