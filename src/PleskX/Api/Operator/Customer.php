@@ -40,8 +40,8 @@ class Customer extends Operator
     }
 
     /**
-     * @param  string     $field
-     * @param  int|string $value
+     * @param string     $field
+     * @param int|string $value
      *
      * @return Struct\GeneralInfo
      */
@@ -53,8 +53,8 @@ class Customer extends Operator
     }
 
     /**
-     * @param  string     $field
-     * @param  int|string $value
+     * @param string     $field
+     * @param int|string $value
      *
      * @return Struct\GeneralInfo
      */
