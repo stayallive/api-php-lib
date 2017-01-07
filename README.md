@@ -1,4 +1,4 @@
-### PHP library for communicating with the Plesk XML-RPC API
+# PHP library for communicating with the Plesk XML-RPC API
 
 ## Install Via Composer
 
