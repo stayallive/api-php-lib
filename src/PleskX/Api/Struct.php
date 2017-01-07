@@ -40,9 +40,15 @@ abstract class Struct
                 $value         = $apiResponse->$property;
             }
 
+            // Get the doc comment from the property
             $reflectionProperty = new ReflectionProperty($this, $classProperty);
             $docBlock           = $reflectionProperty->getDocComment();
-            $propertyType       = preg_replace('/^.+ @var ([a-z]+) .+$/', '\1', $docBlock);
+
+            // Extract the @var line in the docblock
+            preg_match('/.*@var ([a-z]+).*/', $docBlock, $matches);
+
+            // Get the matched property type
+            list(, $propertyType) = $matches;
 
             if ($propertyType == 'string') {
                 $value = (string)$value;

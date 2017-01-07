@@ -1,74 +1,173 @@
 <?php
 
-// Copyright 1999-2016. Parallels IP Holdings GmbH.
-
 namespace PleskX\Api\Struct\Customer;
 
 use PleskX\Api\Struct;
 
 class GeneralInfo extends Struct
 {
-    /** @var string */
+    /**
+     * The date when the account was created.
+     *
+     * @var string
+     */
     public $creationDate;
 
-    /** @var string */
+    /**
+     * The company name.
+     *
+     * @var string
+     */
     public $company;
 
-    /** @var string */
+    /**
+     * The personal name.
+     *
+     * @var string
+     */
     public $personalName;
 
-    /** @var string */
+    /**
+     * The login name (username).
+     *
+     * @var string
+     */
     public $login;
 
-    /** @var int */
+    /**
+     * The current status.
+     *
+     * Possible values:
+     * - 0   (active)
+     * - 4   (under backup/restore)
+     * - 16  (disabled_by admin)
+     * - 256 (expired)
+     *
+     * @var int
+     */
     public $status;
 
-    /** @var string */
+    /**
+     * The phone number.
+     *
+     * @var string
+     */
     public $phone;
 
-    /** @var string */
+    /**
+     * The fax number.
+     *
+     * @var string
+     */
     public $fax;
 
-    /** @var string */
+    /**
+     * The email address.
+     *
+     * @var string
+     */
     public $email;
 
-    /** @var string */
+    /**
+     * The postal address.
+     *
+     * @var string
+     */
     public $address;
 
-    /** @var string */
+    /**
+     * The city.
+     *
+     * @var string
+     */
     public $city;
 
-    /** @var string */
+    /**
+     * The state.
+     *
+     * @var string
+     */
     public $state;
 
-    /** @var string */
+    /**
+     * The postal code.
+     *
+     * @var string
+     */
     public $postalCode;
 
-    /** @var string */
+    /**
+     * The 2-character country code.
+     *
+     * @var string
+     */
     public $country;
 
-    /** @var string */
+    /**
+     * The locale.
+     *
+     * @var string
+     */
     public $locale;
 
-    /** @var string */
+    /**
+     * The global user ID.
+     *
+     * @var string
+     */
     public $guid;
 
-    /** @var string */
+    /**
+     * The administrator user ID.
+     *
+     * @var int
+     */
+    public $ownerId;
+
+    /**
+     * The administrator username (only available when authenticating as admin).
+     *
+     * @var string
+     */
     public $ownerLogin;
 
-    /** @var string */
+    /**
+     * The service provider global unique user ID.
+     *
+     * @var string
+     */
     public $vendorGuid;
 
-    /** @var string */
+    /**
+     * The customer GUID in the Panel components (for example, Business Manager).
+     *
+     * @var string
+     */
     public $externalId;
 
-    /** @var string */
+    /**
+     * The customer description (only available when authenticating as admin).
+     *
+     * @var string
+     */
     public $description;
 
-    /** @var string */
+    /**
+     * The password in the format of $passwordType.
+     *
+     * @var string
+     */
     public $password;
 
-    /** @var string */
+    /**
+     * The type of the customer account password.
+     *
+     * Possible values:
+     * - crypt
+     * - plain
+     *
+     * @var string
+     */
     public $passwordType;
 
     /**
@@ -94,6 +193,7 @@ class GeneralInfo extends Struct
             'country',
             'locale',
             'guid',
+            'owner-id',
             'owner-login',
             'vendor-guid',
             'external-id',

@@ -1,17 +1,30 @@
 <?php
 
-// Copyright 1999-2016. Parallels IP Holdings GmbH.
-
 namespace PleskX\Api\Struct\Customer;
 
-class Info extends \PleskX\Api\Struct
+use PleskX\Api\Struct;
+
+class Info extends Struct
 {
-    /** @var int */
+    /**
+     * The unique identifier.
+     *
+     * @var int
+     */
     public $id;
 
-    /** @var string */
+    /**
+     * The global user ID.
+     *
+     * @var string
+     */
     public $guid;
 
+    /**
+     * Info constructor.
+     *
+     * @param \SimpleXMLElement $apiResponse
+     */
     public function __construct($apiResponse)
     {
         $this->_initScalarProperties($apiResponse, [
