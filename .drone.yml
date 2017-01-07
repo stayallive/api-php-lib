@@ -5,6 +5,10 @@ cache:
   mount:
     - vendor
 
+compose:
+  plesk:
+    image: plesk/plesk:17.0
+
 build:
   test-php70:
     image: tetraweb/php:7.0
@@ -18,7 +22,3 @@ build:
     environment:
       - REMOTE_URL=https://127.0.0.1:8443
       - REMOTE_PASSWORD=changeme
-
-services:
-  plesk:
-    image: plesk/plesk:17.0
