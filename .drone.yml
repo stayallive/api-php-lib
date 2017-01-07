@@ -17,7 +17,7 @@ build:
       - php -v
       - composer self-update --no-progress
       - composer install --no-progress --no-scripts
-      - until $(curl --output /dev/null --silent --insecure --head --fail $REMOTE_URL); do printf '.' sleep 5 done
+      - until $(curl --output /dev/null --silent --insecure --head --fail $REMOTE_URL); do printf '.'; sleep 5; done
       - php vendor/bin/phpunit --colors=never
     environment:
       - REMOTE_URL=https://127.0.0.1:8443
