@@ -18,5 +18,5 @@ build:
       - composer install --no-progress --no-scripts
       - php vendor/bin/phpunit --colors=never
     environment:
-      - REMOTE_URL=https://plesk:8443
+      - REMOTE_URL=https://127.0.0.1:8443
       - REMOTE_PASSWORD=changeme
