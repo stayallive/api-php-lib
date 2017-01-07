@@ -1,6 +1,6 @@
 {
     "name": "stayallive/plesk-php-api",
-    "description": "PHP object-oriented library for the Plesk XML-RPC API",
+    "description": "PHP object-oriented library for communicating with the Plesk XML-RPC API.",
     "license": "Apache-2.0",
     "authors": [
         {
