@@ -12,6 +12,7 @@ build:
   test-php70:
     image: tetraweb/php:7.0
     commands:
+      - docker-php-ext-enable mbstring pcntl
       - php -v
       - composer self-update --no-progress
       - composer install --no-progress --no-scripts
