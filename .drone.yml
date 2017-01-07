@@ -5,10 +5,7 @@ cache:
   mount:
     - vendor
 
-pipeline:
-  plesk:
-    image: plesk/plesk:17.0
-    detach: true
+build:
   test-php70:
     image: tetraweb/php:7.0
     commands:
@@ -16,7 +13,12 @@ pipeline:
       - php -v
       - composer self-update --no-progress
       - composer install --no-progress --no-scripts
+      - sleep 15
       - php vendor/bin/phpunit --colors=never
     environment:
       - REMOTE_URL=https://127.0.0.1:8443
       - REMOTE_PASSWORD=changeme
+
+services:
+  plesk:
+    image: plesk/plesk:17.0
