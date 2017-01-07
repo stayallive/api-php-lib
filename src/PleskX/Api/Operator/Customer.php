@@ -4,12 +4,14 @@
 
 namespace PleskX\Api\Operator;
 
+use PleskX\Api\Operator;
 use PleskX\Api\Struct\Customer as Struct;
 
-class Customer extends \PleskX\Api\Operator
+class Customer extends Operator
 {
     /**
-     * @param  array       $properties
+     * @param array $properties
+     *
      * @return Struct\Info
      */
     public function create($properties)
@@ -27,8 +29,9 @@ class Customer extends \PleskX\Api\Operator
     }
 
     /**
-     * @param  string     $field
-     * @param  int|string $value
+     * @param string     $field
+     * @param int|string $value
+     *
      * @return bool
      */
     public function delete($field, $value)
@@ -37,13 +40,27 @@ class Customer extends \PleskX\Api\Operator
     }
 
     /**
-     * @param  string             $field
-     * @param  int|string         $value
+     * @param  string     $field
+     * @param  int|string $value
+     *
      * @return Struct\GeneralInfo
      */
     public function get($field, $value)
     {
         $items = $this->_getItems(Struct\GeneralInfo::class, 'gen_info', $field, $value);
+
+        return reset($items);
+    }
+
+    /**
+     * @param  string     $field
+     * @param  int|string $value
+     *
+     * @return Struct\GeneralInfo
+     */
+    public function getStat($field, $value)
+    {
+        $items = $this->_getItems(Struct\Stat::class, 'stat', $field, $value);
 
         return reset($items);
     }
