@@ -1,23 +1,24 @@
 <?php
+
 // Copyright 1999-2016. Parallels IP Holdings GmbH.
 
 namespace PleskX\Api\Operator;
+
 use PleskX\Api\Struct\Mail as Struct;
 
 class Mail extends \PleskX\Api\Operator
 {
-
     /**
-     * @param string $name
-     * @param integer $siteId
-     * @param boolean $mailbox
-     * @param string $password
+     * @param  string      $name
+     * @param  int         $siteId
+     * @param  bool        $mailbox
+     * @param  string      $password
      * @return Struct\Info
      */
     public function create($name, $siteId, $mailbox = false, $password = '')
     {
         $packet = $this->_client->getPacket();
-        $info = $packet->addChild($this->_wrapperTag)->addChild('create');
+        $info   = $packet->addChild($this->_wrapperTag)->addChild('create');
 
         $filter = $info->addChild('filter');
         $filter->addChild('site-id', $siteId);
@@ -31,13 +32,14 @@ class Mail extends \PleskX\Api\Operator
         }
 
         $response = $this->_client->request($packet);
+
         return new Struct\Info($response->mailname);
     }
 
     /**
-     * @param string $field
-     * @param integer|string $value
-     * @param integer $siteId
+     * @param  string     $field
+     * @param  int|string $value
+     * @param  int        $siteId
      * @return bool
      */
     public function delete($field, $value, $siteId)
@@ -47,7 +49,7 @@ class Mail extends \PleskX\Api\Operator
         $filter->addChild('site-id', $siteId);
         $filter->addChild($field, $value);
         $response = $this->_client->request($packet);
+
         return 'ok' === (string)$response->status;
     }
-
 }

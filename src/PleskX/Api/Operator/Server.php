@@ -1,12 +1,13 @@
 <?php
+
 // Copyright 1999-2016. Parallels IP Holdings GmbH.
 
 namespace PleskX\Api\Operator;
+
 use PleskX\Api\Struct\Server as Struct;
 
 class Server extends \PleskX\Api\Operator
 {
-
     /**
      * @return array
      */
@@ -39,7 +40,7 @@ class Server extends \PleskX\Api\Operator
      */
     public function getKeyInfo()
     {
-        $keyInfo = [];
+        $keyInfo    = [];
         $keyInfoXml = $this->_getInfo('key');
 
         foreach ($keyInfoXml->property as $property) {
@@ -54,7 +55,7 @@ class Server extends \PleskX\Api\Operator
      */
     public function getComponents()
     {
-        $components = [];
+        $components    = [];
         $componentsXml = $this->_getInfo('components');
 
         foreach ($componentsXml->component as $component) {
@@ -69,12 +70,12 @@ class Server extends \PleskX\Api\Operator
      */
     public function getServiceStates()
     {
-        $states = [];
+        $states    = [];
         $statesXml = $this->_getInfo('services_state');
 
         foreach ($statesXml->srv as $service) {
             $states[(string)$service->id] = [
-                'id' => (string)$service->id,
+                'id'    => (string)$service->id,
                 'title' => (string)$service->title,
                 'state' => (string)$service->state,
             ];
@@ -93,7 +94,7 @@ class Server extends \PleskX\Api\Operator
      */
     public function getShells()
     {
-        $shells = [];
+        $shells    = [];
         $shellsXml = $this->_getInfo('shells');
 
         foreach ($shellsXml->shell as $shell) {
@@ -109,6 +110,7 @@ class Server extends \PleskX\Api\Operator
     public function getNetworkInterfaces()
     {
         $interfacesXml = $this->_getInfo('interfaces');
+
         return (array)$interfacesXml->interface;
     }
 
@@ -122,7 +124,7 @@ class Server extends \PleskX\Api\Operator
      */
     public function getSiteIsolationConfig()
     {
-        $config = [];
+        $config    = [];
         $configXml = $this->_getInfo('site-isolation-config');
 
         foreach ($configXml->property as $property) {
@@ -138,13 +140,13 @@ class Server extends \PleskX\Api\Operator
     }
 
     /**
-     * @param string $login
-     * @param string $clientIp
+     * @param  string $login
+     * @param  string $clientIp
      * @return string
      */
     public function createSession($login, $clientIp)
     {
-        $packet = $this->_client->getPacket();
+        $packet      = $this->_client->getPacket();
         $sessionNode = $packet->addChild($this->_wrapperTag)->addChild('create_session');
         $sessionNode->addChild('login', $login);
         $dataNode = $sessionNode->addChild('data');
@@ -156,7 +158,7 @@ class Server extends \PleskX\Api\Operator
     }
 
     /**
-     * @param string $operation
+     * @param  string            $operation
      * @return \SimpleXMLElement
      */
     private function _getInfo($operation)
@@ -167,5 +169,4 @@ class Server extends \PleskX\Api\Operator
 
         return $response->$operation;
     }
-
 }

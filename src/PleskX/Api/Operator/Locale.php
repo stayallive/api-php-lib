@@ -1,21 +1,22 @@
 <?php
+
 // Copyright 1999-2016. Parallels IP Holdings GmbH.
 
 namespace PleskX\Api\Operator;
+
 use PleskX\Api\Struct\Locale as Struct;
 
 class Locale extends \PleskX\Api\Operator
 {
-
     /**
-     * @param string|null $id
+     * @param  string|null               $id
      * @return Struct\Info|Struct\Info[]
      */
     public function get($id = null)
     {
         $locales = [];
-        $packet = $this->_client->getPacket();
-        $filter = $packet->addChild($this->_wrapperTag)->addChild('get')->addChild('filter');
+        $packet  = $this->_client->getPacket();
+        $filter  = $packet->addChild($this->_wrapperTag)->addChild('get')->addChild('filter');
 
         if (!is_null($id)) {
             $filter->addChild('id', $id);
@@ -29,5 +30,4 @@ class Locale extends \PleskX\Api\Operator
 
         return !is_null($id) ? reset($locales) : $locales;
     }
-
 }

@@ -1,11 +1,11 @@
 <?php
+
 // Copyright 1999-2016. Parallels IP Holdings GmbH.
 
 namespace PleskX\Api\Struct\User;
 
 class GeneralInfo extends \PleskX\Api\Struct
 {
-
     /** @var string */
     public $login;
 

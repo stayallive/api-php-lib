@@ -1,13 +1,15 @@
 <?php
+
 // Copyright 1999-2016. Parallels IP Holdings GmbH.
 
 namespace PleskX\Api\Operator;
+
 use PleskX\Api\Struct\Database as Struct;
 
 class Database extends \PleskX\Api\Operator
 {
     /**
-     * @param array $properties
+     * @param  array       $properties
      * @return Struct\Info
      */
     public function create($properties)
@@ -26,13 +28,13 @@ class Database extends \PleskX\Api\Operator
 
     /**
      * @param $command
-     * @param array $properties
+     * @param  array                   $properties
      * @return \PleskX\Api\XmlResponse
      */
     private function _process($command, array $properties)
     {
         $packet = $this->_client->getPacket();
-        $info = $packet->addChild($this->_wrapperTag)->addChild($command);
+        $info   = $packet->addChild($this->_wrapperTag)->addChild($command);
 
         foreach ($properties as $name => $value) {
             if (false !== strpos($value, '&')) {
@@ -46,64 +48,69 @@ class Database extends \PleskX\Api\Operator
     }
 
     /**
-     * @param array $properties
+     * @param  array $properties
      * @return bool
      */
     public function updateUser(array $properties)
     {
         $response = $this->_process('set-db-user', $properties);
+
         return 'ok' === (string)$response->status;
     }
 
     /**
-     * @param string $field
-     * @param integer|string $value
+     * @param  string      $field
+     * @param  int|string  $value
      * @return Struct\Info
      */
     public function get($field, $value)
     {
         $items = $this->getAll($field, $value);
+
         return reset($items);
     }
 
     /**
-     * @param string $field
-     * @param integer|string $value
+     * @param  string          $field
+     * @param  int|string      $value
      * @return Struct\UserInfo
      */
     public function getUser($field, $value)
     {
         $items = $this->getAllUsers($field, $value);
+
         return reset($items);
     }
 
     /**
-     * @param string $field
-     * @param integer|string $value
+     * @param  string        $field
+     * @param  int|string    $value
      * @return Struct\Info[]
      */
     public function getAll($field, $value)
     {
         $response = $this->_get('get-db', $field, $value);
-        $items = [];
+        $items    = [];
         foreach ($response->xpath('//result') as $xmlResult) {
             $items[] = new Struct\Info($xmlResult);
         }
+
         return $items;
     }
 
     /**
-     * @param string $field
-     * @param integer|string $value
+     * @param  string            $field
+     * @param  int|string        $value
      * @return Struct\UserInfo[]
      */
     public function getAllUsers($field, $value)
     {
         $response = $this->_get('get-db-users', $field, $value);
-        $items = [];
+        $items    = [];
         foreach ($response->xpath('//result') as $xmlResult) {
             $items[] = new Struct\UserInfo($xmlResult);
         }
+
         return $items;
     }
 
@@ -124,12 +131,13 @@ class Database extends \PleskX\Api\Operator
         }
 
         $response = $this->_client->request($packet, \PleskX\Api\Client::RESPONSE_FULL);
+
         return $response;
     }
 
     /**
-     * @param string $field
-     * @param integer|string $value
+     * @param  string     $field
+     * @param  int|string $value
      * @return bool
      */
     public function delete($field, $value)
@@ -138,8 +146,8 @@ class Database extends \PleskX\Api\Operator
     }
 
     /**
-     * @param string $field
-     * @param integer|string $value
+     * @param  string     $field
+     * @param  int|string $value
      * @return bool
      */
     public function deleteUser($field, $value)

@@ -1,11 +1,11 @@
 <?php
+
 // Copyright 1999-2016. Parallels IP Holdings GmbH.
 
 namespace PleskX\Api;
 
 class Operator
 {
-
     /** @var string|null */
     protected $_wrapperTag = null;
 
@@ -17,17 +17,17 @@ class Operator
         $this->_client = $client;
 
         if (is_null($this->_wrapperTag)) {
-            $classNameParts = explode('\\', get_class($this));
+            $classNameParts    = explode('\\', get_class($this));
             $this->_wrapperTag = end($classNameParts);
             $this->_wrapperTag = strtolower(preg_replace('/([a-z])([A-Z])/', '\1-\2', $this->_wrapperTag));
         }
     }
 
     /**
-     * Perform plain API request
+     * Perform plain API request.
      *
-     * @param string|array $request
-     * @param int $mode
+     * @param  string|array $request
+     * @param  int          $mode
      * @return XmlResponse
      */
     public function request($request, $mode = Client::RESPONSE_SHORT)
@@ -36,7 +36,7 @@ class Operator
 
         if (is_array($request)) {
             $request = [$wrapperTag => $request];
-        } else if (preg_match('/^[a-z]/', $request)) {
+        } elseif (preg_match('/^[a-z]/', $request)) {
             $request = "$wrapperTag.$request";
         } else {
             $request = "<$wrapperTag>$request</$wrapperTag>";
@@ -46,22 +46,23 @@ class Operator
     }
 
     /**
-     * @param string $field
-     * @param integer|string $value
-     * @param string $deleteMethodName
+     * @param  string     $field
+     * @param  int|string $value
+     * @param  string     $deleteMethodName
      * @return bool
      */
     protected function _delete($field, $value, $deleteMethodName = 'del')
     {
         $response = $this->request("$deleteMethodName.filter.$field=$value");
+
         return 'ok' === (string)$response->status;
     }
 
     /**
-     * @param string $structClass
-     * @param string $infoTag
-     * @param string|null $field
-     * @param integer|string|null $value
+     * @param  string          $structClass
+     * @param  string          $infoTag
+     * @param  string|null     $field
+     * @param  int|string|null $value
      * @return mixed
      */
     protected function _getItems($structClass, $infoTag, $field = null, $value = null)
@@ -85,5 +86,4 @@ class Operator
 
         return $items;
     }
-
 }

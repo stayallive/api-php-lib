@@ -1,17 +1,18 @@
 <?php
+
 // Copyright 1999-2016. Parallels IP Holdings GmbH.
 
 namespace PleskX\Api\Struct\EventLog;
 
 class DetailedEvent extends \PleskX\Api\Struct
 {
-    /** @var integer */
+    /** @var int */
     public $id;
 
     /** @var string */
     public $type;
 
-    /** @var integer */
+    /** @var int */
     public $time;
 
     /** @var string */

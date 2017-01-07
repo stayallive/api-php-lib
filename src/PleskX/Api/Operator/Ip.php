@@ -1,18 +1,19 @@
 <?php
+
 // Copyright 1999-2016. Parallels IP Holdings GmbH.
 
 namespace PleskX\Api\Operator;
+
 use PleskX\Api\Struct\Ip as Struct;
 
 class Ip extends \PleskX\Api\Operator
 {
-
     /**
      * @return Struct\Info[]
      */
     public function get()
     {
-        $ips = [];
+        $ips    = [];
         $packet = $this->_client->getPacket();
         $packet->addChild($this->_wrapperTag)->addChild('get');
         $response = $this->_client->request($packet);
@@ -23,5 +24,4 @@ class Ip extends \PleskX\Api\Operator
 
         return $ips;
     }
-
 }

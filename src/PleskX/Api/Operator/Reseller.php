@@ -1,32 +1,34 @@
 <?php
+
 // Copyright 1999-2016. Parallels IP Holdings GmbH.
 
 namespace PleskX\Api\Operator;
+
 use PleskX\Api\Struct\Reseller as Struct;
 
 class Reseller extends \PleskX\Api\Operator
 {
-
     /**
-     * @param array $properties
+     * @param  array       $properties
      * @return Struct\Info
      */
     public function create($properties)
     {
         $packet = $this->_client->getPacket();
-        $info = $packet->addChild($this->_wrapperTag)->addChild('add')->addChild('gen-info');
+        $info   = $packet->addChild($this->_wrapperTag)->addChild('add')->addChild('gen-info');
 
         foreach ($properties as $name => $value) {
             $info->addChild($name, $value);
         }
 
         $response = $this->_client->request($packet);
+
         return new Struct\Info($response);
     }
 
     /**
-     * @param string $field
-     * @param integer|string $value
+     * @param  string     $field
+     * @param  int|string $value
      * @return bool
      */
     public function delete($field, $value)
@@ -36,19 +38,20 @@ class Reseller extends \PleskX\Api\Operator
 
 
     /**
-     * @param string $field
-     * @param integer|string $value
+     * @param  string             $field
+     * @param  int|string         $value
      * @return Struct\GeneralInfo
      */
     public function get($field, $value)
     {
         $items = $this->getAll($field, $value);
+
         return reset($items);
     }
 
     /**
-     * @param string $field
-     * @param integer|string $value
+     * @param  string               $field
+     * @param  int|string           $value
      * @return Struct\GeneralInfo[]
      */
     public function getAll($field = null, $value = null)
@@ -69,14 +72,11 @@ class Reseller extends \PleskX\Api\Operator
 
         $items = [];
         foreach ($response->xpath('//result') as $xmlResult) {
-            $item = new Struct\GeneralInfo($xmlResult->data);
+            $item     = new Struct\GeneralInfo($xmlResult->data);
             $item->id = (int)$xmlResult->id;
-            $items[] = $item;
+            $items[]  = $item;
         }
 
         return $items;
     }
-
-
-
 }
