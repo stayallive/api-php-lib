@@ -4,7 +4,6 @@
 
 namespace PleskX\Api;
 
-use Exception;
 use ReflectionProperty;
 
 abstract class Struct
@@ -19,7 +18,7 @@ abstract class Struct
      */
     public function __set($property, $value)
     {
-        throw new Exception("Try to set an undeclared property '{$property}'.");
+        throw new \Exception("Try to set an undeclared property '{$property}'.");
     }
 
     /**
@@ -52,7 +51,7 @@ abstract class Struct
             } elseif ($propertyType == 'boolean' || $propertyType == 'bool') {
                 $value = in_array((string)$value, ['true', 'on', 'enabled']);
             } else {
-                throw new Exception("Unknown property type '{$propertyType}'.");
+                throw new \Exception("Unknown property type '{$propertyType}'.");
             }
 
             $this->$classProperty = $value;
