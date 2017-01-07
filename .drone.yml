@@ -5,7 +5,7 @@ cache:
   mount:
     - vendor
 
-build:
+pipeline:
   plesk:
     image: plesk/plesk:17.0
     detach: true
