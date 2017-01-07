@@ -1,0 +1,21 @@
+clone:
+  path: github.com/stayallive/plesk-php-api
+
+cache:
+  mount:
+    - vendor
+
+build:
+  plesk:
+    image: plesk/plesk:17.0
+    detach: true
+  test-php70:
+    image: tetraweb/php:7.0
+    commands:
+      - php -v
+      - composer self-update --no-progress
+      - composer install --no-progress --no-scripts
+      - php vendor/bin/phpunit --colors=never
+    environment:
+      - REMOTE_URL: https://plesk:8443
+      - REMOTE_PASSWORD: changeme
