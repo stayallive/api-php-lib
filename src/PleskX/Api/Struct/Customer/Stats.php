@@ -4,7 +4,7 @@ namespace PleskX\Api\Struct\Customer;
 
 use PleskX\Api\Struct;
 
-class Stat extends Struct
+class Stats extends Struct
 {
     /**
      * The number of active webspaces.

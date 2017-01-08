@@ -1,6 +1,4 @@
-<?php
-
-// Copyright 1999-2016. Parallels IP Holdings GmbH.
+<?php declare(strict_types = 1);
 
 namespace PleskX\Api\Operator;
 
@@ -14,7 +12,7 @@ class Customer extends Operator
      *
      * @return Struct\Info
      */
-    public function create($properties)
+    public function create(array $properties): Struct\Info
     {
         $packet = $this->_client->getPacket();
         $info   = $packet->addChild($this->_wrapperTag)->addChild('add')->addChild('gen_info');
@@ -34,7 +32,7 @@ class Customer extends Operator
      *
      * @return bool
      */
-    public function delete($field, $value)
+    public function delete(string $field, $value): bool
     {
         return $this->_delete($field, $value);
     }
@@ -45,7 +43,7 @@ class Customer extends Operator
      *
      * @return Struct\GeneralInfo
      */
-    public function get($field, $value)
+    public function get(string $field, $value): Struct\GeneralInfo
     {
         $items = $this->_getItems(Struct\GeneralInfo::class, 'gen_info', $field, $value);
 
@@ -56,11 +54,11 @@ class Customer extends Operator
      * @param string     $field
      * @param int|string $value
      *
-     * @return Struct\GeneralInfo
+     * @return Struct\Stats
      */
-    public function getStat($field, $value)
+    public function getStats(string $field, $value): Struct\Stats
     {
-        $items = $this->_getItems(Struct\Stat::class, 'stat', $field, $value);
+        $items = $this->_getItems(Struct\Stats::class, 'stat', $field, $value);
 
         return reset($items);
     }
@@ -68,7 +66,7 @@ class Customer extends Operator
     /**
      * @return Struct\GeneralInfo[]
      */
-    public function getAll()
+    public function getAll(): array
     {
         return $this->_getItems(Struct\GeneralInfo::class, 'gen_info');
     }
