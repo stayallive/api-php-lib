@@ -1,9 +1,11 @@
 <?php
 // Copyright 1999-2016. Parallels IP Holdings GmbH.
 
+/**
+ * @group databaseServer
+ */
 class DatabaseServerTest extends TestCase
 {
-
     public function testGetSupportedTypes()
     {
         $types = static::$_client->databaseServer()->getSupportedTypes();
@@ -25,5 +27,4 @@ class DatabaseServerTest extends TestCase
         $this->assertGreaterThan(0, count($dbServers));
         $this->assertEquals('localhost', $dbServers[0]->host);
     }
-
 }

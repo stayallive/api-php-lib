@@ -1,9 +1,11 @@
 <?php
 // Copyright 1999-2016. Parallels IP Holdings GmbH.
 
+/**
+ * @group locale
+ */
 class LocaleTest extends TestCase
 {
-
     public function testGet()
     {
         $locales = static::$_client->locale()->get();
@@ -18,5 +20,4 @@ class LocaleTest extends TestCase
         $locale = static::$_client->locale()->get('en-US');
         $this->assertEquals('en-US', $locale->id);
     }
-
 }

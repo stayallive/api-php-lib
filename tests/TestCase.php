@@ -1,19 +1,19 @@
 <?php
+
 // Copyright 1999-2016. Parallels IP Holdings GmbH.
 
 abstract class TestCase extends PHPUnit_Framework_TestCase
 {
-
     /** @var PleskX\Api\Client */
     protected static $_client;
 
     public static function setUpBeforeClass()
     {
-        $login = getenv('REMOTE_LOGIN');
+        $login    = getenv('REMOTE_LOGIN');
         $password = getenv('REMOTE_PASSWORD');
-        $host = getenv('REMOTE_HOST');
-        $port = 8443;
-        $scheme = 'https';
+        $host     = getenv('REMOTE_HOST');
+        $port     = 8443;
+        $scheme   = 'https';
 
         if ($url = getenv('REMOTE_URL')) {
             $parsedUrl = parse_url($url);
@@ -29,24 +29,25 @@ abstract class TestCase extends PHPUnit_Framework_TestCase
      */
     protected static function _getIpAddress()
     {
-        $ips = static::$_client->ip()->get();
+        $ips    = static::$_client->ip()->get();
         $ipInfo = reset($ips);
+
         return $ipInfo->ipAddress;
     }
 
     /**
      * @param string $name
+     *
      * @return \PleskX\Api\Struct\Webspace\Info
      */
     protected static function _createWebspace($name)
     {
         return static::$_client->webspace()->create([
-            'name' => $name,
+            'name'       => $name,
             'ip_address' => static::_getIpAddress(),
         ], [
-            'ftp_login' => 'test-login',
+            'ftp_login'    => 'test-login',
             'ftp_password' => 'test-password',
         ]);
     }
-
 }

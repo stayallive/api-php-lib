@@ -1,13 +1,15 @@
 <?php
 // Copyright 1999-2016. Parallels IP Holdings GmbH.
 
+/**
+ * @group ui
+ */
 class UiTest extends TestCase
 {
-
     private $_customButtonProperties = [
         'place' => 'admin',
-        'url' => 'http://example.com',
-        'text' => 'Example site',
+        'url'   => 'http://example.com',
+        'text'  => 'Example site',
     ];
 
     public function testGetNavigation()
@@ -34,7 +36,7 @@ class UiTest extends TestCase
 
     public function testGetCustomButton()
     {
-        $buttonId = static::$_client->ui()->createCustomButton('admin', $this->_customButtonProperties);
+        $buttonId         = static::$_client->ui()->createCustomButton('admin', $this->_customButtonProperties);
         $customButtonInfo = static::$_client->ui()->getCustomButton($buttonId);
         $this->assertEquals('http://example.com', $customButtonInfo->url);
         $this->assertEquals('Example site', $customButtonInfo->text);
@@ -45,8 +47,7 @@ class UiTest extends TestCase
     public function testDeleteCustomButton()
     {
         $buttonId = static::$_client->ui()->createCustomButton('admin', $this->_customButtonProperties);
-        $result = static::$_client->ui()->deleteCustomButton($buttonId);
+        $result   = static::$_client->ui()->deleteCustomButton($buttonId);
         $this->assertTrue($result);
     }
-
 }

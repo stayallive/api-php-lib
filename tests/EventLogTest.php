@@ -1,9 +1,11 @@
 <?php
 // Copyright 1999-2016. Parallels IP Holdings GmbH.
 
+/**
+ * @group eventLog
+ */
 class EventLogTest extends TestCase
 {
-
     public function testGet()
     {
         $events = static::$_client->eventLog()->get();
@@ -28,5 +30,4 @@ class EventLogTest extends TestCase
         $lastId = static::$_client->eventLog()->getLastId();
         $this->assertGreaterThan(0, $lastId);
     }
-
 }

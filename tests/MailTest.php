@@ -1,9 +1,11 @@
 <?php
 // Copyright 1999-2016. Parallels IP Holdings GmbH.
 
+/**
+ * @group mail
+ */
 class MailTest extends TestCase
 {
-
     /**
      * @var \PleskX\Api\Struct\Webspace\Info
      */
@@ -18,7 +20,7 @@ class MailTest extends TestCase
     {
         parent::setUpBeforeClass();
 
-        $serviceStates = static::$_client->server()->getServiceStates();
+        $serviceStates            = static::$_client->server()->getServiceStates();
         static::$_isMailSupported = $serviceStates['smtp'] && ('running' == $serviceStates['smtp']['state']);
 
         static::$_webspace = static::_createWebspace('example.dom');
@@ -57,5 +59,4 @@ class MailTest extends TestCase
         $result = static::$_client->mail()->delete('name', $mailname->name, static::$_webspace->id);
         $this->assertTrue($result);
     }
-
 }

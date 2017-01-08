@@ -1,16 +1,19 @@
 <?php
+
 // Copyright 1999-2016. Parallels IP Holdings GmbH.
 
+/**
+ * @group webspace
+ */
 class WebspaceTest extends TestCase
 {
-
     /**
      * @return \PleskX\Api\Struct\Webspace\Info
      */
     private function _createDomain()
     {
         return static::$_client->webspace()->create([
-            'name' => 'example-test.dom',
+            'name'       => 'example-test.dom',
             'ip_address' => static::_getIpAddress(),
         ]);
     }
@@ -52,10 +55,10 @@ class WebspaceTest extends TestCase
     public function testCreateWebspace()
     {
         $webspace = static::$_client->webspace()->create([
-            'name' => 'example-test.dom',
+            'name'       => 'example-test.dom',
             'ip_address' => static::_getIpAddress(),
         ], [
-            'ftp_login' => 'test-login',
+            'ftp_login'    => 'test-login',
             'ftp_password' => 'test-password',
         ]);
         static::$_client->webspace()->delete('id', $webspace->id);
@@ -70,11 +73,10 @@ class WebspaceTest extends TestCase
 
     public function testGet()
     {
-        $domain = $this->_createDomain();
+        $domain     = $this->_createDomain();
         $domainInfo = static::$_client->webspace()->get('id', $domain->id);
         $this->assertEquals('example-test.dom', $domainInfo->name);
 
         static::$_client->webspace()->delete('id', $domain->id);
     }
-
 }

@@ -1,9 +1,11 @@
 <?php
 // Copyright 1999-2016. Parallels IP Holdings GmbH.
 
+/**
+ * @group apiClient
+ */
 class ApiClientTest extends TestCase
 {
-
     /**
      * @expectedException \PleskX\Api\Exception
      * @expectedExceptionCode 1005
@@ -41,10 +43,10 @@ class ApiClientTest extends TestCase
      */
     public function testInvalidCredentials()
     {
-        $host = static::$_client->getHost();
-        $port = static::$_client->getPort();
+        $host     = static::$_client->getHost();
+        $port     = static::$_client->getPort();
         $protocol = static::$_client->getProtocol();
-        $client = new PleskX\Api\Client($host, $port, $protocol);
+        $client   = new PleskX\Api\Client($host, $port, $protocol);
         $client->setCredentials('bad-login', 'bad-password');
         $packet = static::$_client->getPacket();
         $packet->addChild('server')->addChild('get_protos');
@@ -57,10 +59,10 @@ class ApiClientTest extends TestCase
      */
     public function testInvalidSecretKey()
     {
-        $host = static::$_client->getHost();
-        $port = static::$_client->getPort();
+        $host     = static::$_client->getHost();
+        $port     = static::$_client->getPort();
         $protocol = static::$_client->getProtocol();
-        $client = new PleskX\Api\Client($host, $port, $protocol);
+        $client   = new PleskX\Api\Client($host, $port, $protocol);
         $client->setSecretKey('bad-key');
         $packet = static::$_client->getPacket();
         $packet->addChild('server')->addChild('get_protos');
@@ -121,7 +123,7 @@ class ApiClientTest extends TestCase
 
         $this->assertCount(2, $responses);
 
-        $protos = (array)$responses[0]->protos->proto;
+        $protos      = (array)$responses[0]->protos->proto;
         $generalInfo = $responses[1];
 
         $this->assertContains('1.6.6.0', $protos);
@@ -154,5 +156,4 @@ class ApiClientTest extends TestCase
         $client = new \PleskX\Api\Client('example.dom', 8880, 'http');
         $this->assertEquals('http', $client->getProtocol());
     }
-
 }

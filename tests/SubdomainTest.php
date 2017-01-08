@@ -1,6 +1,9 @@
 <?php
 // Copyright 1999-2016. Parallels IP Holdings GmbH.
 
+/**
+ * @group subdomain
+ */
 class SubdomainTest extends TestCase
 {
     /**
@@ -23,13 +26,14 @@ class SubdomainTest extends TestCase
     /**
      * @param string $name
      * @param string $webspaceName
+     *
      * @return \PleskX\Api\Struct\Subdomain\Info
      */
     private function _createSubdomain($name)
     {
         return static::$_client->subdomain()->create([
             'parent' => 'example.dom',
-            'name' => $name,
+            'name'   => $name,
         ]);
     }
 
@@ -63,7 +67,7 @@ class SubdomainTest extends TestCase
 
     public function testGetAll()
     {
-        $subdomain = $this->_createSubdomain('sub');
+        $subdomain  = $this->_createSubdomain('sub');
         $subdomain2 = $this->_createSubdomain('sub2');
 
         $subdomainsInfo = static::$_client->subdomain()->getAll();

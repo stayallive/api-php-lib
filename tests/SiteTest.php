@@ -1,6 +1,9 @@
 <?php
 // Copyright 1999-2016. Parallels IP Holdings GmbH.
 
+/**
+ * @group site
+ */
 class SiteTest extends TestCase
 {
     /**
@@ -23,7 +26,7 @@ class SiteTest extends TestCase
     private function _createSite($name)
     {
         return static::$_client->site()->create([
-            'name' => $name,
+            'name'        => $name,
             'webspace-id' => static::$_webspace->id,
         ]);
     }
@@ -58,7 +61,7 @@ class SiteTest extends TestCase
 
     public function testGetAll()
     {
-        $site = $this->_createSite('addon.dom');
+        $site  = $this->_createSite('addon.dom');
         $site2 = $this->_createSite('addon2.dom');
 
         $sitesInfo = static::$_client->site()->getAll();
@@ -69,5 +72,4 @@ class SiteTest extends TestCase
         static::$_client->site()->delete('id', $site->id);
         static::$_client->site()->delete('id', $site2->id);
     }
-
 }

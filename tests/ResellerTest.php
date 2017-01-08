@@ -1,12 +1,15 @@
 <?php
+
 // Copyright 1999-2016. Parallels IP Holdings GmbH.
 
+/**
+ * @group reseller
+ */
 class ResellerTest extends TestCase
 {
-
     private $_resellerProperties = [
-        'pname' => 'John Reseller',
-        'login' => 'reseller-unit-test',
+        'pname'  => 'John Reseller',
+        'login'  => 'reseller-unit-test',
         'passwd' => 'simple-password',
     ];
 
@@ -22,13 +25,13 @@ class ResellerTest extends TestCase
     public function testDelete()
     {
         $reseller = static::$_client->reseller()->create($this->_resellerProperties);
-        $result = static::$_client->reseller()->delete('id', $reseller->id);
+        $result   = static::$_client->reseller()->delete('id', $reseller->id);
         $this->assertTrue($result);
     }
 
     public function testGet()
     {
-        $reseller = static::$_client->reseller()->create($this->_resellerProperties);
+        $reseller     = static::$_client->reseller()->create($this->_resellerProperties);
         $resellerInfo = static::$_client->reseller()->get('id', $reseller->id);
         $this->assertEquals('John Reseller', $resellerInfo->personalName);
         $this->assertEquals('reseller-unit-test', $resellerInfo->login);
@@ -40,13 +43,13 @@ class ResellerTest extends TestCase
     public function testGetAll()
     {
         static::$_client->reseller()->create([
-            'pname' => 'John Reseller',
-            'login' => 'reseller-a',
+            'pname'  => 'John Reseller',
+            'login'  => 'reseller-a',
             'passwd' => 'simple-password',
         ]);
         static::$_client->reseller()->create([
-            'pname' => 'Mike Reseller',
-            'login' => 'reseller-b',
+            'pname'  => 'Mike Reseller',
+            'login'  => 'reseller-b',
             'passwd' => 'simple-password',
         ]);
 
@@ -58,5 +61,4 @@ class ResellerTest extends TestCase
         static::$_client->reseller()->delete('login', 'reseller-a');
         static::$_client->reseller()->delete('login', 'reseller-b');
     }
-
 }

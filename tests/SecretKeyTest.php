@@ -1,9 +1,11 @@
 <?php
 // Copyright 1999-2016. Parallels IP Holdings GmbH.
 
+/**
+ * @group secretKey
+ */
 class SecretKeyTest extends TestCase
 {
-
     public function testCreate()
     {
         $keyId = static::$_client->secretKey()->create('192.168.0.1');
@@ -13,7 +15,7 @@ class SecretKeyTest extends TestCase
 
     public function testGet()
     {
-        $keyId = static::$_client->secretKey()->create('192.168.0.1');
+        $keyId   = static::$_client->secretKey()->create('192.168.0.1');
         $keyInfo = static::$_client->secretKey()->get($keyId);
 
         $this->assertEquals($keyId, $keyInfo->key);
@@ -25,7 +27,7 @@ class SecretKeyTest extends TestCase
 
     public function testGetAll()
     {
-        $keyIds = [];
+        $keyIds   = [];
         $keyIds[] = static::$_client->secretKey()->create('192.168.0.1');
         $keyIds[] = static::$_client->secretKey()->create('192.168.0.2');
 

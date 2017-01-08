@@ -1,6 +1,9 @@
 <?php
 // Copyright 1999-2016. Parallels IP Holdings GmbH.
 
+/**
+ * @group dns
+ */
 class DnsTest extends TestCase
 {
     /**
