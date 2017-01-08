@@ -1,7 +1,5 @@
 <?php
 
-// Copyright 1999-2016. Parallels IP Holdings GmbH.
-
 namespace PleskX\Api;
 
 use ReflectionProperty;
@@ -58,6 +56,29 @@ abstract class Struct
                 $value = in_array((string)$value, ['true', 'on', 'enabled']);
             } else {
                 throw new \Exception("Unknown property type '{$propertyType}'.");
+            }
+
+            $this->$classProperty = $value;
+        }
+    }
+
+    /**
+     * Initialize list of scalar properties by response.
+     *
+     * @param \SimpleXMLElement $apiResponse
+     * @param array             $properties
+     *
+     * @throws \Exception
+     */
+    protected function _initStructProperties($apiResponse, array $properties)
+    {
+        foreach ($properties as $property) {
+            if (is_array($property)) {
+                $classProperty = current($property);
+                $value         = (isset($apiResponse[key($property)])) ? $apiResponse[key($property)] : null;
+            } else {
+                $classProperty = $this->_underToCamel(str_replace('-', '_', $property));
+                $value         = (isset($apiResponse[$property])) ? $apiResponse[$property] : null;
             }
 
             $this->$classProperty = $value;

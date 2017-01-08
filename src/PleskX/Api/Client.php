@@ -211,7 +211,7 @@ class Client
             } elseif (preg_match('/^[a-z]/', $request)) {
                 $this->_expandRequestShortSyntax($request, $requestXml);
             }
-            
+
             $responses[] = $this->request($request);
         }
 
@@ -219,7 +219,7 @@ class Client
             throw new Client\Exception('Multi requests are not supported via SDK.');
         }
         $responseXml = $this->_performHttpRequest($requestXml->asXML());
-        
+
 
         $responses = [];
         foreach ($responseXml->children() as $childNode) {

@@ -44,9 +44,9 @@ class Site extends \PleskX\Api\Operator
      */
     public function get($field, $value)
     {
-        $items = $this->_getItems(Struct\GeneralInfo::class, 'gen_info', $field, $value);
-
-        return reset($items);
+        return $this->_getItem([
+            'gen_info' => Struct\GeneralInfo::class
+        ], $field, $value)['gen_info'];
     }
 
     /**
@@ -54,6 +54,10 @@ class Site extends \PleskX\Api\Operator
      */
     public function getAll()
     {
-        return $this->_getItems(Struct\GeneralInfo::class, 'gen_info');
+        return array_map(function ($response) {
+            return $response['gen_info'];
+        }, $this->_getItems([
+            'gen_info' => Struct\GeneralInfo::class
+        ]));
     }
 }

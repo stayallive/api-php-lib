@@ -30,8 +30,9 @@ class Webspace extends \PleskX\Api\Operator
     }
 
     /**
-     * @param  array       $properties
-     * @param  array|null  $hostingProperties
+     * @param  array      $properties
+     * @param  array|null $hostingProperties
+     *
      * @return Struct\Info
      */
     public function create(array $properties, array $hostingProperties = null)
@@ -65,6 +66,7 @@ class Webspace extends \PleskX\Api\Operator
     /**
      * @param  string     $field
      * @param  int|string $value
+     *
      * @return bool
      */
     public function delete($field, $value)
@@ -73,15 +75,16 @@ class Webspace extends \PleskX\Api\Operator
     }
 
     /**
-     * @param  string             $field
-     * @param  int|string         $value
+     * @param  string     $field
+     * @param  int|string $value
+     *
      * @return Struct\GeneralInfo
      */
     public function get($field, $value)
     {
-        $items = $this->_getItems(Struct\GeneralInfo::class, 'gen_info', $field, $value);
-
-        return reset($items);
+        return $this->_getItem([
+            'gen_info' => Struct\GeneralInfo::class,
+        ], $field, $value)['gen_info'];
     }
 
     /**
@@ -89,6 +92,10 @@ class Webspace extends \PleskX\Api\Operator
      */
     public function getAll()
     {
-        return $this->_getItems(Struct\GeneralInfo::class, 'gen_info');
+        return array_map(function ($response) {
+            return $response['gen_info'];
+        }, $this->_getItems([
+            'gen_info' => Struct\GeneralInfo::class,
+        ]));
     }
 }
