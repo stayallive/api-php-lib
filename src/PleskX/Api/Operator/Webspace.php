@@ -30,8 +30,8 @@ class Webspace extends \PleskX\Api\Operator
     }
 
     /**
-     * @param  array      $properties
-     * @param  array|null $hostingProperties
+     * @param array      $properties
+     * @param array|null $hostingProperties
      *
      * @return Struct\Info
      */
@@ -64,8 +64,8 @@ class Webspace extends \PleskX\Api\Operator
     }
 
     /**
-     * @param  string     $field
-     * @param  int|string $value
+     * @param string     $field
+     * @param int|string $value
      *
      * @return bool
      */
@@ -75,8 +75,8 @@ class Webspace extends \PleskX\Api\Operator
     }
 
     /**
-     * @param  string     $field
-     * @param  int|string $value
+     * @param string     $field
+     * @param int|string $value
      *
      * @return Struct\GeneralInfo
      */
