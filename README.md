@@ -69,8 +69,20 @@ After which the container is available on `http://localhost:8443` assuming you r
 REMOTE_URL=https://127.0.0.1:8443 REMOTE_PASSWORD=changeme ./vendor/bin/phpunit`
 ```
 
+You can also run single groups of test using the `--group` parameters, to list al available groups:
+
+```bash
+./vendor/bin/phpunit --list-groups
+```
+
+To run the Customer tests:
+
+```bash
+REMOTE_URL=https://127.0.0.1:8443 REMOTE_PASSWORD=changeme ./vendor/bin/phpunit --group customer
+```
+
 ## Using Grunt for Continuous Testing
 
-* Install Node.js
-* Install dependencies via `npm install` command
+* Install node.js and install grunt globally: `npm -g install grunt`
+* Install dependencies via `npm install` or `yarn install` command
 * Run `REMOTE_HOST=your-plesk-host.dom REMOTE_PASSWORD=password grunt watch:test`
