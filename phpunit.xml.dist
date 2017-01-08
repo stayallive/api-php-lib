@@ -1,9 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Copyright 1999-2016. Parallels IP Holdings GmbH. -->
-<phpunit colors="true" bootstrap="tests/autoload.php">
+<phpunit backupGlobals="false"
+         backupStaticAttributes="false"
+         colors="true"
+         bootstrap="tests/bootstrap.php"
+         convertErrorsToExceptions="true"
+         convertNoticesToExceptions="true"
+         convertWarningsToExceptions="true"
+         processIsolation="false"
+         stopOnFailure="false"
+         syntaxCheck="false">
     <testsuites>
-        <testsuite>
-            <directory suffix="Test.php">tests/</directory>
+        <testsuite name="Plesk PHP API Test Suite">
+            <directory>./tests/</directory>
         </testsuite>
     </testsuites>
+    <filter>
+        <whitelist>
+            <directory suffix=".php">app/</directory>
+        </whitelist>
+    </filter>
+    <php>
+        <env name="REMOTE_URL" value="https://127.0.0.1:8443"/>
+        <env name="REMOTE_PASSWORD" value="changeme"/>
+    </php>
 </phpunit>
