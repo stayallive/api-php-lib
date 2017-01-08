@@ -6,7 +6,7 @@
  */
 class CertificateTest extends TestCase
 {
-    public function testGenerate()
+    public function testCanGenerateCertificateSigningRequest()
     {
         $certificate = static::$_client->certificate()->generate([
             'bits'     => 2048,
@@ -17,8 +17,10 @@ class CertificateTest extends TestCase
             'email'    => 'info@plesk.com',
             'name'     => 'plesk.com',
         ]);
-        $this->assertGreaterThan(0, strlen($certificate->request));
-        $this->assertStringStartsWith('-----BEGIN CERTIFICATE REQUEST-----', $certificate->request);
+
+        $this->assertGreaterThan(0, strlen($certificate->csr));
+        $this->assertStringStartsWith('-----BEGIN CERTIFICATE REQUEST-----', $certificate->csr);
+
         $this->assertGreaterThan(0, strlen($certificate->privateKey));
         $this->assertStringStartsWith('-----BEGIN PRIVATE KEY-----', $certificate->privateKey);
     }

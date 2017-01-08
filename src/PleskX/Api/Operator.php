@@ -50,4 +50,58 @@ abstract class Operator
 
         return $this->_client->request($request, $mode);
     }
+
+    /**
+     * Get a single item from the API response.
+     *
+     * @param array           $datasets
+     * @param string|null     $field
+     * @param int|string|null $value
+     *
+     * @return mixed
+     */
+    protected function _getItem(array $datasets = [], $field = null, $value = null)
+    {
+        return $this->_getItems($datasets, $field, $value)[0];
+    }
+
+    /**
+     * Get all items from the API response.
+     *
+     * @param array           $datasets
+     * @param string|null     $field
+     * @param int|string|null $value
+     *
+     * @return mixed
+     */
+    protected function _getItems(array $datasets = [], $field = null, $value = null)
+    {
+        $packet = $this->_client->getPacket();
+        $getTag = $packet->addChild($this->_wrapperTag)->addChild('get');
+
+        $filterTag = $getTag->addChild('filter');
+        if (!is_null($field)) {
+            $filterTag->addChild($field, $value);
+        }
+
+        $datasetsTag = $getTag->addChild('dataset');
+        foreach ($datasets as $dataset => $struct) {
+            $datasetsTag->addChild($dataset);
+        }
+
+        $response = $this->_client->request($packet, Client::RESPONSE_FULL);
+
+        $items = [];
+        foreach ($response->xpath('//result') as $xmlResult) {
+            $data = [];
+
+            foreach ($datasets as $dataset => $struct) {
+                $data[$dataset] = new $struct($xmlResult->data->$dataset);
+            }
+
+            $items[] = $data;
+        }
+
+        return $items;
+    }
 }
