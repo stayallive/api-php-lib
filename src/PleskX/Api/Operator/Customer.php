@@ -1,102 +1,22 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace PleskX\Api\Operator;
 
-use PleskX\Api\Operator;
+use PleskX\Api\CRUDOperator;
 use PleskX\Api\Struct\Customer as Struct;
 
-class Customer extends Operator
+/**
+ * Customer operator.
+ *
+ * @method Struct\Customer get(string $filter, $key, array $with)
+ * @method Struct\Customer[] getAll(string $filter, $key, array $with)
+ */
+class Customer extends CRUDOperator
 {
-    /**
-     * Get the full customer information.
-     *
-     * @param string $field
-     * @param mixed  $value
-     *
-     * @return \PleskX\Api\Struct\Customer\Customer
-     */
-    public function get(string $field, $value): Struct\Customer
-    {
-        return $this->_getItemCollection(Struct\Customer::class, [
-            'gen_info' => Struct\GeneralInfo::class,
-            'stat'     => Struct\Stats::class,
-        ], $field, $value);
-    }
-
-    /**
-     * Get the general info from the customer.
-     *
-     * @param string     $field
-     * @param int|string $value
-     *
-     * @return Struct\GeneralInfo
-     */
-    public function getGeneralInfo(string $field, $value): Struct\GeneralInfo
-    {
-        return $this->_getItem([
-            'gen_info' => Struct\GeneralInfo::class,
-        ], $field, $value)['gen_info'];
-    }
-
-    /**
-     * Get the customer statistics.
-     *
-     * @param string     $field
-     * @param int|string $value
-     *
-     * @return Struct\Stats
-     */
-    public function getStats(string $field, $value): Struct\Stats
-    {
-        return $this->_getItem([
-            'stat' => Struct\Stats::class,
-        ], $field, $value)['stat'];
-    }
-
-
-    /**
-     * Get all full customers.
-     *
-     * @return Struct\Customer[]
-     */
-    public function getAll(): array
-    {
-        return $this->_getItemCollections(Struct\Customer::class, [
-            'gen_info' => Struct\GeneralInfo::class,
-            'stat'     => Struct\Stats::class,
-        ]);
-    }
-
-    /**
-     * Get the general info from all customers.
-     *
-     * @return Struct\GeneralInfo[]
-     */
-    public function getAllGeneralInfo(): array
-    {
-        return array_map(function (Struct\Customer $customer) {
-            return $customer->info;
-        }, $this->_getItemCollections(Struct\Customer::class, [
-            'gen_info' => Struct\GeneralInfo::class,
-        ]));
-    }
-
-    /**
-     * Get the statistics from all customers.
-     *
-     * @return Struct\Stats[]
-     */
-    public function getAllStats(): array
-    {
-        return array_map(function (Struct\Customer $customer) {
-            return $customer->stats;
-        }, $this->_getItemCollections(Struct\Customer::class, [
-            'stat' => Struct\Stats::class,
-        ]));
-    }
-
+    const GENERAL_INFO = 'gen_info';
+    const STATISTICS   = 'stat';
 
     /**
      * Create a customer.
@@ -119,17 +39,26 @@ class Customer extends Operator
         return new Struct\Info($response);
     }
 
+    /**
+     * Get the collection class for this Operator.
+     *
+     * @return string
+     */
+    protected function getCollectionClass()
+    {
+        return Struct\Customer::class;
+    }
 
     /**
-     * Delete a customer.
+     * Get the available datasets for this Operator.
      *
-     * @param string     $field
-     * @param int|string $value
-     *
-     * @return bool
+     * @return array
      */
-    public function delete(string $field, $value): bool
+    protected function getDatasets()
     {
-        return $this->_delete($field, $value);
+        return [
+            self::GENERAL_INFO => Struct\GeneralInfo::class,
+            self::STATISTICS   => Struct\Stats::class,
+        ];
     }
 }
