@@ -1,28 +1,30 @@
 <?php
 
-// Copyright 1999-2016. Parallels IP Holdings GmbH.
-
 namespace PleskX\Api\Operator;
 
+use PleskX\Api\Operator;
 use PleskX\Api\Struct\Certificate as Struct;
 
-class Certificate extends \PleskX\Api\Operator
+class Certificate extends Operator
 {
     /**
-     * @param  array       $properties
-     * @return Struct\Info
+     * Generate a certificate signing request and a private key for an SSL/TLS certificate.
+     *
+     * @param array $properties
+     *
+     * @return Struct\Certificate
      */
-    public function generate($properties)
+    public function generate(array $properties): Struct\Certificate
     {
-        $packet = $this->_client->getPacket();
-        $info   = $packet->addChild($this->_wrapperTag)->addChild('generate')->addChild('info');
+        $packet  = $this->_client->getPacket();
+        $request = $packet->addChild($this->_wrapperTag)->addChild('generate')->addChild('info');
 
         foreach ($properties as $name => $value) {
-            $info->addChild($name, $value);
+            $request->addChild($name, $value);
         }
 
         $response = $this->_client->request($packet);
 
-        return new Struct\Info($response);
+        return new Struct\Certificate($response);
     }
 }

@@ -1,25 +1,25 @@
 <?php
 
-namespace PleskX\Api\Struct\Reseller;
+namespace PleskX\Api\Struct\Certificate;
 
 use SimpleXMLElement;
 use PleskX\Api\Struct;
 
-class Info extends Struct
+class Certificate extends Struct
 {
     /**
-     * The reseller user ID.
-     *
-     * @var int
-     */
-    public $id;
-
-    /**
-     * The reseller globally unique user ID.
+     * The certificate signing request.
      *
      * @var string
      */
-    public $guid;
+    public $csr;
+
+    /**
+     * The private key.
+     *
+     * @var string
+     */
+    public $privateKey;
 
     /**
      * Info constructor.
@@ -29,8 +29,8 @@ class Info extends Struct
     public function __construct(SimpleXMLElement $apiResponse)
     {
         $this->_initScalarProperties($apiResponse, [
-            'id',
-            'guid',
+            'csr',
+            ['pvt' => 'privateKey'],
         ]);
     }
 }

@@ -4,7 +4,7 @@
 
 namespace PleskX\Api;
 
-class Operator
+abstract class Operator
 {
     /** @var string|null */
     protected $_wrapperTag = null;
@@ -12,6 +12,11 @@ class Operator
     /** @var Client */
     protected $_client;
 
+    /**
+     * Operator constructor.
+     *
+     * @param \PleskX\API\Client $client
+     */
     public function __construct($client)
     {
         $this->_client = $client;
@@ -26,9 +31,10 @@ class Operator
     /**
      * Perform plain API request.
      *
-     * @param  string|array $request
-     * @param  int          $mode
-     * @return XmlResponse
+     * @param string|array $request
+     * @param int          $mode
+     *
+     * @return \XmlResponse
      */
     public function request($request, $mode = Client::RESPONSE_SHORT)
     {
@@ -46,19 +52,6 @@ class Operator
     }
 
     /**
-     * @param  string     $field
-     * @param  int|string $value
-     * @param  string     $deleteMethodName
-     * @return bool
-     */
-    protected function _delete($field, $value, $deleteMethodName = 'del')
-    {
-        $response = $this->request("$deleteMethodName.filter.$field=$value");
-
-        return 'ok' === (string)$response->status;
-    }
-
-    /**
      * Get a single item from the API response.
      *
      * @param array           $datasets
@@ -70,21 +63,6 @@ class Operator
     protected function _getItem(array $datasets = [], $field = null, $value = null)
     {
         return $this->_getItems($datasets, $field, $value)[0];
-    }
-
-    /**
-     * Get a single item collection from the API response.
-     *
-     * @param string          $collectionClass
-     * @param array           $datasets
-     * @param string|null     $field
-     * @param int|string|null $value
-     *
-     * @return mixed
-     */
-    protected function _getItemCollection($collectionClass, array $datasets = [], $field = null, $value = null)
-    {
-        return new $collectionClass($this->_getItems($datasets, $field, $value)[0]);
     }
 
     /**
@@ -125,22 +103,5 @@ class Operator
         }
 
         return $items;
-    }
-
-    /**
-     * Get a single item collection from the API response.
-     *
-     * @param string          $collectionClass
-     * @param array           $datasets
-     * @param string|null     $field
-     * @param int|string|null $value
-     *
-     * @return mixed
-     */
-    protected function _getItemCollections($collectionClass, array $datasets = [], $field = null, $value = null)
-    {
-        return array_map(function ($response) use ($collectionClass) {
-            return new $collectionClass($response);
-        }, $this->_getItems($datasets, $field, $value));
     }
 }

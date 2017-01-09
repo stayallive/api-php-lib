@@ -25,21 +25,31 @@ class CustomerTest extends TestCase
 
     public function testCanGetCustomerGeneralInfo()
     {
-        $customerInfo = static::$_client->customer()->get('login', $this->customerProperties['login']);
+        /** @var \PleskX\Api\Struct\Customer\Customer $customer */
+        $customer = static::$_client->customer()->get(
+            'login', $this->customerProperties['login'], [
+                \PleskX\Api\Operator\Customer::GENERAL_INFO,
+            ]
+        );
 
-        $this->assertEquals('Plesk', $customerInfo->company);
-        $this->assertEquals('John Smith', $customerInfo->personalName);
-        $this->assertEquals('john-unit-test', $customerInfo->login);
-        $this->assertEquals('john@smith.com', $customerInfo->email);
-        $this->assertEquals('Good guy', $customerInfo->description);
-        $this->assertEquals('link:12345', $customerInfo->externalId);
+        $this->assertEquals('Plesk', $customer->info->company);
+        $this->assertEquals('John Smith', $customer->info->personalName);
+        $this->assertEquals('john-unit-test', $customer->info->login);
+        $this->assertEquals('john@smith.com', $customer->info->email);
+        $this->assertEquals('Good guy', $customer->info->description);
+        $this->assertEquals('link:12345', $customer->info->externalId);
     }
 
     public function testCanRetrieveCustomerStats()
     {
-        $stats = static::$_client->customer()->getStats('login', $this->customerProperties['login']);
+        /** @var \PleskX\Api\Struct\Customer\Customer $customer */
+        $customer = static::$_client->customer()->get(
+            'login', $this->customerProperties['login'], [
+                \PleskX\Api\Operator\Customer::STATISTICS,
+            ]
+        );
 
-        $this->assertEquals(0, $stats->activeDomains);
+        $this->assertEquals(0, $customer->stats->activeDomains);
     }
 
     public function testCanGetAllCustomers()
@@ -50,13 +60,15 @@ class CustomerTest extends TestCase
             'passwd' => 'simple-password',
         ]);
 
-        $customersInfo = static::$_client->customer()->getAll();
+        $customers = static::$_client->customer()->getAll([
+            \PleskX\Api\Operator\Customer::GENERAL_INFO,
+        ]);
 
-        $this->assertCount(2, $customersInfo);
-        $this->assertEquals('John Smith', $customersInfo[0]->personalName);
-        $this->assertEquals('john-unit-test', $customersInfo[0]->login);
-        $this->assertEquals('Mike Black', $customersInfo[1]->personalName);
-        $this->assertEquals('mike-unit-test', $customersInfo[1]->login);
+        $this->assertCount(2, $customers);
+        $this->assertEquals('John Smith', $customers[0]->info->personalName);
+        $this->assertEquals('john-unit-test', $customers[0]->info->login);
+        $this->assertEquals('Mike Black', $customers[1]->info->personalName);
+        $this->assertEquals('mike-unit-test', $customers[1]->info->login);
 
         static::$_client->customer()->delete('login', 'mike-unit-test');
     }
