@@ -1,15 +1,19 @@
 <?php
 
-// Copyright 1999-2016. Parallels IP Holdings GmbH.
-
 namespace PleskX\Api\Operator;
 
+use PleskX\Api\CRUDOperator;
 use PleskX\Api\Struct\Reseller as Struct;
 
-class Reseller extends \PleskX\Api\Operator
+class Reseller extends CRUDOperator
 {
+    const GENERAL_INFO = 'gen-info';
+
     /**
-     * @param  array       $properties
+     * Create a new reseller.
+     *
+     * @param  array $properties
+     *
      * @return Struct\Info
      */
     public function create($properties)
@@ -27,56 +31,24 @@ class Reseller extends \PleskX\Api\Operator
     }
 
     /**
-     * @param  string     $field
-     * @param  int|string $value
-     * @return bool
+     * Get the collection class for this Operator.
+     *
+     * @return string
      */
-    public function delete($field, $value)
+    protected function getCollectionClass()
     {
-        return $this->_delete($field, $value);
-    }
-
-
-    /**
-     * @param  string             $field
-     * @param  int|string         $value
-     * @return Struct\GeneralInfo
-     */
-    public function get($field, $value)
-    {
-        $items = $this->getAll($field, $value);
-
-        return reset($items);
+        return Struct\Reseller::class;
     }
 
     /**
-     * @param  string               $field
-     * @param  int|string           $value
-     * @return Struct\GeneralInfo[]
+     * Get the available datasets for this Operator.
+     *
+     * @return array
      */
-    public function getAll($field = null, $value = null)
+    protected function getDatasets()
     {
-        $packet = $this->_client->getPacket();
-        $getTag = $packet->addChild($this->_wrapperTag)->addChild('get');
-
-        $filterTag = $getTag->addChild('filter');
-        if (!is_null($field)) {
-            $filterTag->addChild($field, $value);
-        }
-
-        $datasetTag = $getTag->addChild('dataset');
-        $datasetTag->addChild('gen-info');
-        $datasetTag->addChild('permissions');
-
-        $response = $this->_client->request($packet, \PleskX\Api\Client::RESPONSE_FULL);
-
-        $items = [];
-        foreach ($response->xpath('//result') as $xmlResult) {
-            $item     = new Struct\GeneralInfo($xmlResult->data);
-            $item->id = (int)$xmlResult->id;
-            $items[]  = $item;
-        }
-
-        return $items;
+        return [
+            self::GENERAL_INFO => Struct\GeneralInfo::class,
+        ];
     }
 }

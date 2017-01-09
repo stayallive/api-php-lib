@@ -1,33 +1,46 @@
 <?php
 
-// Copyright 1999-2016. Parallels IP Holdings GmbH.
-
 namespace PleskX\Api\Struct\Reseller;
 
-class GeneralInfo extends \PleskX\Api\Struct
+use SimpleXMLElement;
+use PleskX\Api\Struct;
+
+class GeneralInfo extends Struct\User
 {
-    /** @var int */
-    public $id;
+    /**
+     * Indicates if the user is a power user.
+     *
+     * @var bool
+     */
+    public $powerUser;
 
-    /** @var string */
-    public $personalName;
-
-    /** @var string */
-    public $login;
-
-    /** @var array */
-    public $permissions;
-
-    public function __construct($apiResponse)
+    /**
+     * GeneralInfo constructor.
+     *
+     * @param \SimpleXMLElement $apiResponse
+     */
+    public function __construct(SimpleXMLElement $apiResponse)
     {
-        $this->_initScalarProperties($apiResponse->{'gen-info'}, [
+        $this->_initScalarProperties($apiResponse, [
+            ['cr-date' => 'creationDate'],
+            ['cname' => 'company'],
             ['pname' => 'personalName'],
             'login',
+            'status',
+            'phone',
+            'fax',
+            'email',
+            'address',
+            'city',
+            'state',
+            ['pcode' => 'postalCode'],
+            'country',
+            'locale',
+            'guid',
+            'external-id',
+            'description',
+            'password',
+            'password-type',
         ]);
-
-        $this->permissions = [];
-        foreach ($apiResponse->permissions->permission as $permissionInfo) {
-            $this->permissions[(string)$permissionInfo->name] = (string)$permissionInfo->value;
-        }
     }
 }

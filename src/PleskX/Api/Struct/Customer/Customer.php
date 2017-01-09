@@ -25,7 +25,7 @@ class Customer extends Struct
      *
      * @param array $apiResponse
      */
-    public function __construct($apiResponse)
+    public function __construct(array $apiResponse)
     {
         $this->_initStructProperties($apiResponse, [
             ['gen_info' => 'info'],
