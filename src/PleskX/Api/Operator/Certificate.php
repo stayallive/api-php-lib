@@ -27,19 +27,4 @@ class Certificate extends Operator
 
         return new Struct\Certificate($response);
     }
-
-    public function list(string $filter, $value)
-    {
-        $packet = $this->_client->getPacket();
-        $pool   = $packet->addChild($this->_wrapperTag)->addChild('get-pool');
-
-        if ($filter === 'admin') {
-            $pool->addChild('admin');
-        } else {
-            $pool->addChild('filter')
-                 ->addChild($filter, $value);
-        }
-
-        return $this->_client->request($packet);
-    }
 }
