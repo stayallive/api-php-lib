@@ -30,9 +30,6 @@ enabled:
   - no_blank_lines_between_imports
   - no_blank_lines_between_traits
 
-disabled:
-  - declare_equal_normalize
-
 finder:
   name:
     - "*.php"
