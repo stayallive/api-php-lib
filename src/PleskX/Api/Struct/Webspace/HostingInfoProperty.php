@@ -27,6 +27,11 @@ class HostingInfoProperty extends Struct
      */
     public $label;
 
+    /**
+     * HostingInfoProperty constructor.
+     *
+     * @param $apiResponse
+     */
     public function __construct($apiResponse)
     {
         $this->_initScalarProperties($apiResponse, [
