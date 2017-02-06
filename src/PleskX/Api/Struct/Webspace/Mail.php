@@ -91,7 +91,7 @@ class Mail extends Struct
      */
     public function __construct(SimpleXMLElement $apiResponse)
     {
-        $strategy   = array_keys((array)$apiResponse->{"nonexistent-user"})[0];
+        $strategy   = array_keys((array)$apiResponse->{'nonexistent-user'})[0];
         $strategies = [
             'reject'  => Mail\RejectNonExistentUser::class,
             'bounce'  => Mail\BounceNonExistentUser::class,
@@ -99,7 +99,7 @@ class Mail extends Struct
         ];
 
         $this->nonExistentUser = new $strategies[$strategy](
-            (string)$apiResponse->{"nonexistent-user"}[$strategy]
+            (string)$apiResponse->{'nonexistent-user'}[$strategy]
         );
 
         $this->_initScalarProperties($apiResponse, [
@@ -108,10 +108,10 @@ class Mail extends Struct
             'greylisting',
             ['mailservice' => 'mailService'],
             'webmail-certificate',
-            ['outgoing-messages-mbox-limit' => 'outgoingLimitMailbox'],
-            ['outgoing-messages-domain-limit' => 'outgoingLimitDomain'],
+            ['outgoing-messages-mbox-limit'         => 'outgoingLimitMailbox'],
+            ['outgoing-messages-domain-limit'       => 'outgoingLimitDomain'],
             ['outgoing-messages-subscription-limit' => 'outgoingLimitSubscription'],
-            ['outgoing-messages-enable-sendmail' => 'outgoingEnableSendmail'],
+            ['outgoing-messages-enable-sendmail'    => 'outgoingEnableSendmail'],
         ]);
 
         $this->ipAddresses = (array)$apiResponse->ip_address;

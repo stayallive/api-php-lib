@@ -13,8 +13,8 @@ abstract class CRUDOperator extends Operator
      * @param mixed  $value
      * @param array  $with
      *
-     * @return \PleskX\Api\Struct
      * @throws \Exception
+     * @return \PleskX\Api\Struct
      */
     public function get(string $field, $value, array $with = [])
     {
@@ -45,8 +45,8 @@ abstract class CRUDOperator extends Operator
      * @param string     $field
      * @param int|string $value
      *
-     * @return bool
      * @throws \Exception
+     * @return bool
      */
     public function delete(string $field, $value): bool
     {
@@ -82,8 +82,8 @@ abstract class CRUDOperator extends Operator
      * @param string $field
      * @param mixed  $value
      *
-     * @return mixed
      * @throws \Exception
+     * @return mixed
      */
     protected function getItemCollection(
         $collectionStructClass,
@@ -130,8 +130,8 @@ abstract class CRUDOperator extends Operator
      * @param string $field
      * @param mixed  $value
      *
-     * @return mixed
      * @throws \Exception
+     * @return mixed
      */
     protected function getItemCollections(
         $collectionStructClass,
@@ -172,9 +172,9 @@ abstract class CRUDOperator extends Operator
     }
 
     /**
-     * @param  string     $field
-     * @param  int|string $value
-     * @param  string     $deleteMethodName
+     * @param string     $field
+     * @param int|string $value
+     * @param string     $deleteMethodName
      *
      * @return bool
      */

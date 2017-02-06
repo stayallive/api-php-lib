@@ -93,15 +93,15 @@ class Statistics extends Struct
     {
         $this->_initScalarProperties($apiResponse, [
             'traffic',
-            ['subdom' => 'subDomains'],
-            ['wu' => 'webUsers'],
-            ['box' => 'emailBoxes'],
-            ['redir' => 'redirects'],
-            ['mg' => 'mailingGroups'],
-            ['resp' => 'autoResponders'],
-            ['maillists' => 'mailLists'],
-            ['db' => 'databases'],
-            ['webapps' => 'webApps'],
+            ['subdom'          => 'subDomains'],
+            ['wu'              => 'webUsers'],
+            ['box'             => 'emailBoxes'],
+            ['redir'           => 'redirects'],
+            ['mg'              => 'mailingGroups'],
+            ['resp'            => 'autoResponders'],
+            ['maillists'       => 'mailLists'],
+            ['db'              => 'databases'],
+            ['webapps'         => 'webApps'],
             ['traffic_prevday' => 'trafficYesterday'],
         ]);
     }

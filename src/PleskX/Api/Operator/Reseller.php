@@ -12,7 +12,7 @@ class Reseller extends CRUDOperator
     /**
      * Create a new reseller.
      *
-     * @param  array $properties
+     * @param array $properties
      *
      * @return Struct\Info
      */

@@ -80,7 +80,7 @@ class Webspace extends Struct
             ['gen_info' => 'info'],
             ['hosting' => 'hostingInfo'],
             'limits',
-            ['stat' => 'statistics'],
+            ['stat'  => 'statistics'],
             ['prefs' => 'preferences'],
             'disk_usage',
             'performance',

@@ -143,7 +143,7 @@ class GeneralInfo extends Struct
             'owner-id',
             'owner-login',
             ['dns_ip_address' => 'dnsIPAddress'],
-            ['htype' => 'hostingType'],
+            ['htype'          => 'hostingType'],
             'guid',
             'vendor-guid',
             'external-id',
