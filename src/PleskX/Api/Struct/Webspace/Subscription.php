@@ -40,7 +40,7 @@ class Subscription extends Struct
             'synchronized',
         ]);
 
-        foreach($apiResponse->plan as $plan) {
+        foreach ($apiResponse->plan as $plan) {
             $this->plans[] = (string)$plan->{'plan-guid'};
         }
     }
