@@ -32,10 +32,20 @@ abstract class Struct
         foreach ($properties as $property) {
             if (is_array($property)) {
                 $classProperty = current($property);
-                $value         = $apiResponse->{key($property)};
+
+                if (!isset($apiResponse->{key($property)})) {
+                    continue;
+                }
+
+                $value = $apiResponse->{key($property)};
             } else {
                 $classProperty = $this->_underToCamel(str_replace('-', '_', $property));
-                $value         = $apiResponse->$property;
+
+                if (!isset($apiResponse->$property)) {
+                    continue;
+                }
+
+                $value = $apiResponse->$property;
             }
 
             // Get the doc comment from the property

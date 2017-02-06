@@ -28,13 +28,15 @@ abstract class CRUDOperator extends Operator
     /**
      * Get all items.
      *
-     * @param array $with
+     * @param array  $with
+     * @param string $field
+     * @param mixed  $value
      *
      * @return \PleskX\Api\Struct[]
      */
-    public function getAll(array $with = [])
+    public function getAll(array $with = [], string $field, $value)
     {
-        return $this->getItemCollections($this->getCollectionClass(), $this->getDatasets(), $with);
+        return $this->getItemCollections($this->getCollectionClass(), $this->getDatasets(), $with, $field, $value);
     }
 
     /**

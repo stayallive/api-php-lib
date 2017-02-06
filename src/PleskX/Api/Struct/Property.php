@@ -1,10 +1,11 @@
 <?php
 
-namespace PleskX\Api\Struct\Webspace;
+namespace PleskX\Api\Struct;
 
+use SimpleXMLElement;
 use PleskX\Api\Struct;
 
-class HostingInfoProperty extends Struct
+class Property extends Struct
 {
     /**
      * Property name.
@@ -14,25 +15,22 @@ class HostingInfoProperty extends Struct
     public $name;
 
     /**
-     * Property type.
+     * Property value.
      *
      * @var string
      */
-    public $type;
+    public $value;
 
     /**
-     * Property label.
+     * Property constructor.
      *
-     * @var string
+     * @param \SimpleXMLElement $apiResponse
      */
-    public $label;
-
-    public function __construct($apiResponse)
+    public function __construct(SimpleXMLElement $apiResponse)
     {
         $this->_initScalarProperties($apiResponse, [
             'name',
-            'type',
-            'label',
+            'value',
         ]);
     }
 }

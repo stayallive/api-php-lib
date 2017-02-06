@@ -1,6 +1,6 @@
 <?php
 
-// Copyright 1999-2016. Parallels IP Holdings GmbH.
+use PleskX\Api\Operator\Webspace;
 
 /**
  * @group webspace
@@ -24,14 +24,12 @@ class WebspaceTest extends TestCase
         $this->assertInternalType('array', $descriptor->permissions);
         $this->assertGreaterThan(0, count($descriptor->permissions));
     }
-
     public function testGetLimitDescriptor()
     {
         $descriptor = static::$_client->webspace()->getLimitDescriptor();
         $this->assertInternalType('array', $descriptor->limits);
         $this->assertGreaterThan(0, count($descriptor->limits));
     }
-
     public function testGetPhysicalHostingDescriptor()
     {
         $descriptor = static::$_client->webspace()->getPhysicalHostingDescriptor();
@@ -43,39 +41,35 @@ class WebspaceTest extends TestCase
         $this->assertEquals('string', $ftpLoginProperty->type);
     }
 
-    public function testCreate()
+    public function testCanCreateWebspace()
     {
         $domain = $this->_createDomain();
+
         $this->assertInternalType('integer', $domain->id);
         $this->assertGreaterThan(0, $domain->id);
 
         static::$_client->webspace()->delete('id', $domain->id);
     }
 
-    public function testCreateWebspace()
-    {
-        $webspace = static::$_client->webspace()->create([
-            'name'       => 'example-test.dom',
-            'ip_address' => static::_getIpAddress(),
-        ], [
-            'ftp_login'    => 'test-login',
-            'ftp_password' => 'test-password',
-        ]);
-        static::$_client->webspace()->delete('id', $webspace->id);
-    }
-
-    public function testDelete()
+    public function testCanDeleteWebspace()
     {
         $domain = $this->_createDomain();
+
         $result = static::$_client->webspace()->delete('id', $domain->id);
+
         $this->assertTrue($result);
     }
 
-    public function testGet()
+    public function testCanGetWebspace()
     {
-        $domain     = $this->_createDomain();
-        $domainInfo = static::$_client->webspace()->get('id', $domain->id);
-        $this->assertEquals('example-test.dom', $domainInfo->name);
+        $domain = $this->_createDomain();
+
+        /** @var \PleskX\Api\Struct\Webspace\Webspace $webspace */
+        $webspace = static::$_client->webspace()->get('id', $domain->id, [
+            Webspace::GENERAL_INFO,
+        ]);
+
+        $this->assertEquals('example-test.dom', $webspace->info->asciiName);
 
         static::$_client->webspace()->delete('id', $domain->id);
     }

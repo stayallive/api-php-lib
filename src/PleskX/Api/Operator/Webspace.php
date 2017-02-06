@@ -1,19 +1,21 @@
 <?php
 
-// Copyright 1999-2016. Parallels IP Holdings GmbH.
-
 namespace PleskX\Api\Operator;
 
+use PleskX\Api\CRUDOperator;
 use PleskX\Api\Struct\Webspace as Struct;
 
-class Webspace extends \PleskX\Api\Operator
+class Webspace extends CRUDOperator
 {
-    public function getPermissionDescriptor()
-    {
-        $response = $this->request('get-permission-descriptor.filter');
-
-        return new Struct\PermissionDescriptor($response);
-    }
+    const GENERAL_INFO  = 'gen_info';
+    const HOSTING_INFO  = 'hosting';
+    const LIMITS        = 'limits';
+    const STATISTICS    = 'stat';
+    const PREFERENCES   = 'prefs';
+    const DISK_USAGE    = 'disk_usage';
+    const PERFORMANCE   = 'performance';
+    const SUBSCRIPTIONS = 'subscriptions';
+    const MAIL          = 'mail';
 
     public function getLimitDescriptor()
     {
@@ -21,7 +23,12 @@ class Webspace extends \PleskX\Api\Operator
 
         return new Struct\LimitDescriptor($response);
     }
+    public function getPermissionDescriptor()
+    {
+        $response = $this->request('get-permission-descriptor.filter');
 
+        return new Struct\PermissionDescriptor($response);
+    }
     public function getPhysicalHostingDescriptor()
     {
         $response = $this->request('get-physical-hosting-descriptor.filter');
@@ -30,6 +37,8 @@ class Webspace extends \PleskX\Api\Operator
     }
 
     /**
+     * Create a new webspace.
+     *
      * @param array      $properties
      * @param array|null $hostingProperties
      *
@@ -64,38 +73,32 @@ class Webspace extends \PleskX\Api\Operator
     }
 
     /**
-     * @param string     $field
-     * @param int|string $value
+     * Get the collection class for this Operator.
      *
-     * @return bool
+     * @return string
      */
-    public function delete($field, $value)
+    protected function getCollectionClass()
     {
-        return $this->_delete($field, $value);
+        return Struct\Webspace::class;
     }
 
     /**
-     * @param string     $field
-     * @param int|string $value
+     * Get the available datasets for this Operator.
      *
-     * @return Struct\GeneralInfo
+     * @return array
      */
-    public function get($field, $value)
+    protected function getDatasets()
     {
-        return $this->_getItem([
-            'gen_info' => Struct\GeneralInfo::class,
-        ], $field, $value)['gen_info'];
-    }
-
-    /**
-     * @return Struct\GeneralInfo[]
-     */
-    public function getAll()
-    {
-        return array_map(function ($response) {
-            return $response['gen_info'];
-        }, $this->_getItems([
-            'gen_info' => Struct\GeneralInfo::class,
-        ]));
+        return [
+            self::GENERAL_INFO  => Struct\GeneralInfo::class,
+            self::HOSTING_INFO  => Struct\HostingInfo::class,
+            self::LIMITS        => Struct\Limits::class,
+            self::STATISTICS    => Struct\Statistics::class,
+            self::PREFERENCES   => Struct\Preferences::class,
+            self::DISK_USAGE    => Struct\DiskUsage::class,
+            self::PERFORMANCE   => Struct\Performance::class,
+            self::SUBSCRIPTIONS => Struct\Subscription::class,
+            self::MAIL          => Struct\Mail::class,
+        ];
     }
 }

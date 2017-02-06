@@ -14,7 +14,7 @@ class PhysicalHostingDescriptor extends \PleskX\Api\Struct
         $this->properties = [];
 
         foreach ($apiResponse->descriptor->property as $propertyInfo) {
-            $this->properties[(string)$propertyInfo->name] = new HostingPropertyInfo($propertyInfo);
+            $this->properties[(string)$propertyInfo->name] = new HostingInfoProperty($propertyInfo);
         }
     }
 }
