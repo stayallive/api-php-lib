@@ -1,15 +1,12 @@
-clone:
-  path: github.com/stayallive/plesk-php-api
-
 cache:
   mount:
     - vendor
 
-compose:
+services:
   plesk:
     image: plesk/plesk:17.0
 
-build:
+pipeline:
   test-php70:
     image: tetraweb/php:7.0
     commands:
