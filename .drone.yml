@@ -9,7 +9,7 @@ pipeline:
       - until $(curl --output /dev/null --silent --insecure --head --fail $REMOTE_URL); do echo "Waiting for Plesk to start..."; sleep 10; done
       - php vendor/bin/phpunit --colors=never
     environment:
-      - REMOTE_URL=https://127.0.0.1:8443
+      - REMOTE_URL=https://plesk:8443
       - REMOTE_PASSWORD=changeme
 
 services:
