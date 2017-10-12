@@ -4,7 +4,7 @@ cache:
 
 services:
   plesk:
-    image: plesk/plesk:17.0
+    image: plesk/plesk:17.5
 
 pipeline:
   test-php70:

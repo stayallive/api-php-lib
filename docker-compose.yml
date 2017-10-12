@@ -1,7 +1,7 @@
 version: '2'
 services:
   plesk:
-    image: plesk/plesk:17.0
+    image: plesk/plesk:17.5
     logging:
       driver: none
   tests:
